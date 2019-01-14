@@ -118,14 +118,14 @@ fp2=open(version+"b_ren2.bat",'w')
 for name,hash in query:
 	fp1.write("ren "+hash+' '+name[2:]+'\n')
 	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists("\\b\\"+hash):
+	if not os.path.exists(""+hash):
 		if verbose:
 			print("\tDownloading file "+hash+'('+name+')')
 		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-		dlfilefrmurl(url,"b"+hash,dl_headers)
+		dlfilefrmurl(url,""+hash,dl_headers)
 	else:
 		if md5chk:
-			with open("b"+hash,'rb') as fp:
+			with open(""+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
@@ -134,7 +134,7 @@ for name,hash in query:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-				dlfilefrmurl(url,"b"+hash,dl_headers)
+				dlfilefrmurl(url,""+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
@@ -147,14 +147,14 @@ fp2=open(version+"l_ren2.bat",'w')
 for name,hash in query:
 	fp1.write("ren "+hash+' '+name[2:]+'\n')
 	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists("l"+hash):
+	if not os.path.exists(""+hash):
 		if verbose:
 			print("\tDownloading file "+hash+'('+name+')')
 		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-		dlfilefrmurl(url,"l"+hash,dl_headers)
+		dlfilefrmurl(url,""+hash,dl_headers)
 	else:
 		if md5chk:
-			with open("l"+hash,'rb') as fp:
+			with open(""+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
@@ -163,7 +163,7 @@ for name,hash in query:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-				dlfilefrmurl(url,".l"+hash,dl_headers)
+				dlfilefrmurl(url,"."+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
