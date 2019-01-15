@@ -11,6 +11,7 @@ import json
 import sqlite3,hashlib
 from lz4 import block
 import time
+import shutil
 
 def dlfilefrmurl(url,path,headers):
 	r=requests.get(url,headers=headers)
@@ -120,11 +121,11 @@ fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
 	fp1.write("ren "+hash+' '+name[2:]+'\n')
 	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\bgm\\b"+hash):
+	if not os.path.exists(version+"\\bgm\\"+hash):
 		if verbose:
 			print("\tDownloading file "+hash+'('+name+')')
 		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-		dlfilefrmurl(url,version+"\\bgm\\b"+hash,dl_headers)
+		dlfilefrmurl(url,version+"\\bgm\\"+hash,dl_headers)
 	else:
 		if md5chk:
 			with open(bgm+"\\b"+hash,'rb') as fp:
@@ -136,7 +137,7 @@ for name,hash in query:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-				dlfilefrmurl(url,version+"\\bgm\\b"+hash,dl_headers)
+				dlfilefrmurl(url,version+"\\bgm\\"+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
@@ -151,14 +152,14 @@ fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
 	fp1.write("ren "+hash+' '+name[2:]+'\n')
 	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\sound\\l"+hash):
+	if not os.path.exists(version+"\\sound\\"+hash):
 		if verbose:
 			print("\tDownloading file "+hash+'('+name+')')
 		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-		dlfilefrmurl(url,version+"\\sound\\l"+hash,dl_headers)
+		dlfilefrmurl(url,version+"\\sound\\"+hash,dl_headers)
 	else:
 		if md5chk:
-			with open("\\sound\\l"+hash,'rb') as fp:
+			with open("\\sound\\"+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
@@ -167,7 +168,7 @@ for name,hash in query:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-				dlfilefrmurl(url,".\\l\\"+hash,dl_headers)
+				dlfilefrmurl(url,"\\sound\\"+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
