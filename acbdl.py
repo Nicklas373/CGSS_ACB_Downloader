@@ -59,15 +59,15 @@ if not version:
 
 if verbose:
 	print("\tGame Version = "+version)
-if not os.path.exists(""+version):
+if not os.path.exists(".\\"+version):
 	os.mkdir(version)
 
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; FRD-AL00 Build/HUAWEIFRD-AL00)','X-Unity-Version': '5.4.5p1','Accept-Encoding': 'gzip'}
 
-if not os.path.exists("manifests"):
-	os.mkdir("manifests")
-dbname="manifestsmanifest_"+version+".db"
-lz4name="manifestsmanifest_"+version+".db.lz4"
+if not os.path.exists(".\\manifests"):
+	os.mkdir(".\\manifests")
+dbname=".\\manifests\\manifest_"+version+".db"
+lz4name=".\\manifests\\manifest_"+version+".db.lz4"
 if not os.path.exists(dbname):
 	if not os.path.exists(lz4name):
 		if verbose:
@@ -101,7 +101,7 @@ db=sqlite3.Connection(dbname)
 if gennamelist:
 	if verbose:
 		print("\tGenerating namelist.csv ...")
-	namelist=open(version+"list_name_hash_sha1.csv",'w')
+	namelist=open(version+"\\list_name_hash_sha1.csv",'w')
 	query=db.execute("select name,hash from manifests")
 	namelist.write("name,md5,sha1\n")
 	for i in query:
@@ -113,19 +113,21 @@ if gennamelist:
 	query.close()
 	namelist.close()
 query=db.execute("select name,hash from manifests where name like 'b/%.acb'")
-fp1=open(version+"b_ren1.bat",'w')
-fp2=open(version+"b_ren2.bat",'w')
+bgm=version+"/bgm"
+os.makedirs(bgm)
+fp1=open(version+"\\bgm\\b_ren1.bat",'w')
+fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
 	fp1.write("ren "+hash+' '+name[2:]+'\n')
 	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(""+hash):
+	if not os.path.exists(version+"\\bgm\\b"+hash):
 		if verbose:
 			print("\tDownloading file "+hash+'('+name+')')
 		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-		dlfilefrmurl(url,""+hash,dl_headers)
+		dlfilefrmurl(url,version+"\\bgm\\b"+hash,dl_headers)
 	else:
 		if md5chk:
-			with open(""+hash,'rb') as fp:
+			with open(bgm+"\\b"+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
@@ -134,7 +136,7 @@ for name,hash in query:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-				dlfilefrmurl(url,""+hash,dl_headers)
+				dlfilefrmurl(url,version+"\\bgm\\b"+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
@@ -142,19 +144,21 @@ for name,hash in query:
 fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.acb'")
-fp1=open(version+"l_ren1.bat",'w')
-fp2=open(version+"l_ren2.bat",'w')
+sound=version+"/sound"
+os.makedirs(sound)
+fp1=open(version+"\\sound\\l_ren1.bat",'w')
+fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
 	fp1.write("ren "+hash+' '+name[2:]+'\n')
 	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(""+hash):
+	if not os.path.exists(version+"\\sound\\l"+hash):
 		if verbose:
 			print("\tDownloading file "+hash+'('+name+')')
 		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-		dlfilefrmurl(url,""+hash,dl_headers)
+		dlfilefrmurl(url,version+"\\sound\\l"+hash,dl_headers)
 	else:
 		if md5chk:
-			with open(""+hash,'rb') as fp:
+			with open("\\sound\\l"+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
@@ -163,7 +167,7 @@ for name,hash in query:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-				dlfilefrmurl(url,"."+hash,dl_headers)
+				dlfilefrmurl(url,".\\l\\"+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
