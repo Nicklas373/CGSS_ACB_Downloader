@@ -9,7 +9,6 @@ path_bgm = "bgm/"
 path_sound = "sound/"
 path_bgm_moved = "bgm_acb"
 path_sound_moved = "sound_acb"
-success="Good lah :v"
 
 # define move all files to specific directory command
 files = os.listdir(path_bgm)
@@ -34,11 +33,5 @@ except OSError:
     print ("Copy files from %s to static directory failed" % path_sound_moved)
 else:
      print ("Moving files from %s to static directory success" % path_sound_moved)
-
-# execute renaming mass file on the folder
-os.system("bgm_acb/b_ren1.bat")
-os.system("bgm_acb/b_ren2.bat")
-os.system("sound_acb/l_ren1.bat")
-os.system("sound_acb/l_ren2.bat")
 
 print ("Script done, finally :p")
