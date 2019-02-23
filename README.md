@@ -1,12 +1,9 @@
-#IM@S Cinderella Girls Starlight Stage ACB (Only) Assets Downloader Based on Python
+# IM@S Cinderella Girls Starlight Stage ACB (Only) Assets Downloader Based on Python
 
 This is a python based script that can download ACB assets files for BGM and Sound / Live directory on database.
 
 # Project Status
-- Build ![Build] (https://img.shields.io/badge/build-passing-green.svg)
-
-# Latest Manifest
-- Manifest ![Manifests](https://img.shields.io/badge/Manifest-10051700-blue.svg)
+![Build](https://img.shields.io/badge/build-passing-green.svg) ![Manifests](https://img.shields.io/badge/Manifest-10051700-blue.svg)
 
 How it's work :
 1. Script will check latest manifest version that available on server
