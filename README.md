@@ -1,5 +1,4 @@
 # IM@S Cinderella Girls Starlight Stage ACB (Only) Assets Downloader Based on Python
-
 This is a python based script that can download ACB assets files for BGM and Sound / Live directory on database.
 
 # Project Status
@@ -24,3 +23,9 @@ NOTE:
 1. This script only work on windows for now 
 2. You'll need to install python software to execute this file
 3. I'm not pro at python, so if any error or you find any error just comment and wait it, i'm not promise to serve quick fix at the moment
+
+Thanks to :
+- [ACADFA4](https://github.com/ACA4DFA4/CGSS_ACB_Downloader)
+- [Toyobashi/CGSS_ASSET_Downloader](https://github.com/toyobayashi/CGSSAssetsDownloader)
+- [Deretore Tookit](https://github.com/OpenCGSS/DereTore)
+- [CPLs](https://puu.sh/CaDrP/0788d02786.txt)
