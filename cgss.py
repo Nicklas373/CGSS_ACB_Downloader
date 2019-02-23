@@ -73,7 +73,7 @@ if not os.path.exists(dbname):
 	if not os.path.exists(lz4name):
 		if verbose:
 			print("\tDownloading lz4-compressed database ...")
-		url="https://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/Android_AHigh_SHigh"
+		url="http://storage.game.starlight-stage.jp/dl/"+version+"/manifests/Android_AHigh_SHigh"
 		r=requests.get(url,headers=dl_headers)
 		with open(lz4name,'wb') as fp:
 			fp.write(r.content)
