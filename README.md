@@ -28,4 +28,4 @@ Thanks to :
 - [ACADFA4](https://github.com/ACA4DFA4/CGSS_ACB_Downloader)
 - [Toyobashi/CGSS_ASSET_Downloader](https://github.com/toyobayashi/CGSSAssetsDownloader)
 - [Deretore Tookit](https://github.com/OpenCGSS/DereTore)
-- [CPLs](https://puu.sh/CaDrP/0788d02786.txt)
+- [CPLs](https://nyaa.si/view/1117762)
