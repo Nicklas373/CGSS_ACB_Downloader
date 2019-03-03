@@ -73,7 +73,7 @@ if not os.path.exists(dbname):
 	if not os.path.exists(lz4name):
 		if verbose:
 			print("\tDownloading lz4-compressed database ...")
-		url="http://storage.game.starlight-stage.jp/dl/"+version+"/manifests/Android_AHigh_SHigh"
+		url="https://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/Android_AHigh_SHigh"
 		r=requests.get(url,headers=dl_headers)
 		with open(lz4name,'wb') as fp:
 			fp.write(r.content)
@@ -115,7 +115,7 @@ if gennamelist:
 	namelist.close()
 query=db.execute("select name,hash from manifests where name like 'b/%.acb'")
 bgm=version+"/bgm"
-#os.makedirs(bgm)
+os.makedirs(bgm)
 fp1=open(version+"\\bgm\\b_ren1.bat",'w')
 fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
@@ -146,7 +146,7 @@ fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.acb'")
 sound=version+"/sound"
-#os.makedirs(sound)
+os.makedirs(sound)
 fp1=open(version+"\\sound\\l_ren1.bat",'w')
 fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
