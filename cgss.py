@@ -119,29 +119,29 @@ os.makedirs(bgm)
 fp1=open(version+"\\bgm\\b_ren1.bat",'w')
 fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
-	fp1.write("ren "+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\bgm\\"+hash):
+	fp1.write("ren "+hash[:2]+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+hash[:2]+'\n')
+	if not os.path.exists(version+hash[:2]+hash+bgm):
 		if verbose:
-			print("\tDownloading file "+hash+'('+name+')')
-		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-		dlfilefrmurl(url,version+"\\bgm\\"+hash,dl_headers)
+			print("\tDownloading file "+hash[:2]+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\bgm\\"+hash[:2]+hash,dl_headers)
 	else:
 		if md5chk:
-			with open(bgm+"\\b"+hash,'rb') as fp:
+			with open(bgm+hash[:2]+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
 				del(buf)
-			if md5res!=hash:
+			if md5res!=hash[:2]:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
-				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/b/"+hash
-				dlfilefrmurl(url,version+"\\bgm\\"+hash,dl_headers)
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\bgm\\"+hash[:2]+hash,dl_headers)
 			elif verbose:
-				print("\tFile "+hash+'('+name+')'+" already exists")
+				print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
 		elif verbose:
-			print("\tFile "+hash+'('+name+')'+" already exists")
+			print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
 fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.acb'")
@@ -150,29 +150,29 @@ os.makedirs(sound)
 fp1=open(version+"\\sound\\l_ren1.bat",'w')
 fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
-	fp1.write("ren "+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\sound\\"+hash):
+	fp1.write("ren "+hash[:2]+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+hash[:2]+'\n')
+	if not os.path.exists(version+hash[:2]+hash+sound):
 		if verbose:
-			print("\tDownloading file "+hash+'('+name+')')
-		url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-		dlfilefrmurl(url,version+"\\sound\\"+hash,dl_headers)
+			print("\tDownloading file "+hash[:2]+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\sound\\"+hash[:2]+hash,dl_headers)
 	else:
 		if md5chk:
-			with open("\\sound\\"+hash,'rb') as fp:
+			with open(sound+hash[:2]+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
 				del(buf)
-			if md5res!=hash:
+			if md5res!=hash[:2]:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
-				url="http://storage.game.starlight-stage.jp/dl/resources/High/Sound/Common/l/"+hash
-				dlfilefrmurl(url,"\\sound\\"+hash,dl_headers)
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\sound\\"+hash[:2]+hash,dl_headers)
 			elif verbose:
-				print("\tFile "+hash+'('+name+')'+" already exists")
+				print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
 		elif verbose:
-			print("\tFile "+hash+'('+name+')'+" already exists")
+			print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
 fp1.close()
 fp2.close()
 db.close()
