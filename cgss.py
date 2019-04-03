@@ -107,7 +107,7 @@ if gennamelist:
 	namelist.write("name,md5,sha1\n")
 	for i in query:
 		name,hash=i
-		namelist.write(name+','+hash+',')
+		namelist.write(name+','+hash[:2]+hash+',')
 		if name[1]=='/':
 			name=name[2:]
 		namelist.write(hashlib.sha1(name.encode()).hexdigest()+'\n')
@@ -119,29 +119,29 @@ os.makedirs(bgm)
 fp1=open(version+"\\bgm\\b_ren1.bat",'w')
 fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
-	fp1.write("ren "+hash[:2]+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+hash[:2]+'\n')
-	if not os.path.exists(version+hash[:2]+hash+bgm):
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\bgm\\"+hash):
 		if verbose:
-			print("\tDownloading file "+hash[:2]+hash+'('+name+')')
+			print("\tDownloading file "+hash+'('+name+')')
 		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-		dlfilefrmurl(url,version+"\\bgm\\"+hash[:2]+hash,dl_headers)
+		dlfilefrmurl(url,version+"\\bgm\\"+hash,dl_headers)
 	else:
 		if md5chk:
-			with open(bgm+hash[:2]+hash,'rb') as fp:
+			with open("\\bgm\\"+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
 				del(buf)
-			if md5res!=hash[:2]:
+			if md5res!=hash:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-				dlfilefrmurl(url,version+"\\bgm\\"+hash[:2]+hash,dl_headers)
+				dlfilefrmurl(url,version+"\\bgm\\"+hash,dl_headers)
 			elif verbose:
-				print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
+				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
-			print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
+			print("\tFile "+hash+'('+name+')'+" already exists")
 fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.acb'")
@@ -150,29 +150,29 @@ os.makedirs(sound)
 fp1=open(version+"\\sound\\l_ren1.bat",'w')
 fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
-	fp1.write("ren "+hash[:2]+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+hash[:2]+'\n')
-	if not os.path.exists(version+hash[:2]+hash+sound):
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\sound\\"+hash):
 		if verbose:
-			print("\tDownloading file "+hash[:2]+hash+'('+name+')')
+			print("\tDownloading file "+hash+'('+name+')')
 		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-		dlfilefrmurl(url,version+"\\sound\\"+hash[:2]+hash,dl_headers)
+		dlfilefrmurl(url,version+"\\sound\\"+hash,dl_headers)
 	else:
 		if md5chk:
-			with open(sound+hash[:2]+hash,'rb') as fp:
+			with open("\\sound\\"+hash,'rb') as fp:
 				buf=fp.read()
 				fp.close()
 				md5res=hashlib.md5(buf).hexdigest()
 				del(buf)
-			if md5res!=hash[:2]:
+			if md5res!=hash:
 				if verbose:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-				dlfilefrmurl(url,version+"\\sound\\"+hash[:2]+hash,dl_headers)
+				dlfilefrmurl(url,version+"\\sound\\"+hash,dl_headers)
 			elif verbose:
-				print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
+				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
-			print("\tFile "+hash[:2]+hash+'('+name+')'+" already exists")
+			print("\tFile "+hash+'('+name+')'+" already exists")
 fp1.close()
 fp2.close()
 db.close()
