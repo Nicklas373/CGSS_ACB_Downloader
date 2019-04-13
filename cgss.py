@@ -53,10 +53,9 @@ for i in args:
 if not version:
 	if verbose:
 		print("\tGetting game version ...")
-	url="https://starlight.kirara.ca/api/v1/info"
+	url="https://raw.githubusercontent.com/esterTion/cgss_master_db_diff/master/!TruthVersion.txt"
 	r=requests.get(url)
-	jsonData=json.loads(r.content)
-	version=jsonData['truth_version']
+	version=r.text.rstrip()
 
 if verbose:
 	print("\tGame Version = "+version)
@@ -115,7 +114,7 @@ if gennamelist:
 	namelist.close()
 query=db.execute("select name,hash from manifests where name like 'b/%.acb'")
 bgm=version+"/bgm"
-os.makedirs(bgm)
+#os.makedirs(bgm)
 fp1=open(version+"\\bgm\\b_ren1.bat",'w')
 fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
@@ -146,7 +145,7 @@ fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.acb'")
 sound=version+"/sound"
-os.makedirs(sound)
+#os.makedirs(sound)
 fp1=open(version+"\\sound\\l_ren1.bat",'w')
 fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
