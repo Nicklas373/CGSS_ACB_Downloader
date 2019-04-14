@@ -53,9 +53,10 @@ for i in args:
 if not version:
 	if verbose:
 		print("\tGetting game version ...")
-	url="https://raw.githubusercontent.com/esterTion/cgss_master_db_diff/master/!TruthVersion.txt"
+	url="https://starlight.kirara.ca/api/v1/info"
 	r=requests.get(url)
-	version=r.text.rstrip()
+	jsonData=json.loads(r.content)
+	version=jsonData['truth_version']
 
 if verbose:
 	print("\tGame Version = "+version)
