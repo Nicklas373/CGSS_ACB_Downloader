@@ -29,3 +29,4 @@ Thanks to :
 - [Toyobashi/CGSS_ASSET_Downloader](https://github.com/toyobayashi/CGSSAssetsDownloader)
 - [Deretore Tookit](https://github.com/OpenCGSS/DereTore)
 - [CPLs](https://nyaa.si/view/1131944)
+- [esterTion](https://github.com/esterTion/cgss_master_db_diff)
