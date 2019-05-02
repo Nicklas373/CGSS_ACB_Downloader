@@ -65,7 +65,7 @@ if not version:
                         r=requests.get(url)
                         version=r.text.rstrip()
                 else:
-                        print("\tStarlight Kirara Connection Established")
+                        print("")
 
 if verbose:
 	print("\tGame Version = "+version)
