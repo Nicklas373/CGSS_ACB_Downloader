@@ -51,12 +51,21 @@ for i in args:
 		sys.exit(1)
 
 if not version:
-	if verbose:
-		print("\tGetting game version ...")
-	url="https://starlight.kirara.ca/api/v1/info"
-	r=requests.get(url)
-	jsonData=json.loads(r.content)
-	version=jsonData['truth_version']
+        if verbose:
+                try:
+                        print("\tGetting game version ...")
+                        url="https://starlight.kirara.ca/api/v1/info"
+                        r=requests.get(url)
+                        jsonData=json.loads(r.content)
+                        version=jsonData['truth_version']
+                except Exception as e:
+                        print("\tStarlight kirara was down...")
+                        print("\tGetting game version from esterTion source...")
+                        url="https://raw.githubusercontent.com/esterTion/cgss_master_db_diff/master/!TruthVersion.txt"
+                        r=requests.get(url)
+                        version=r.text.rstrip()
+                else:
+                        print("\tStarlight Kirara Connection Established")
 
 if verbose:
 	print("\tGame Version = "+version)
