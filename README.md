@@ -19,6 +19,10 @@ What's next :
 5. Drag and drop your acb file that want to extract to program called "ACB2WAV.exe" on bgm_acb or sound_acb to deretore-toolkit/release
 6. WAV files will available on your acb current directory (bgm_acb/sound_acb)
 
+Dependency:
+1. requests (module)
+2. lz4 (module)
+
 NOTE:
 1. This script only work on windows for now 
 2. You'll need to install python software to execute this file
