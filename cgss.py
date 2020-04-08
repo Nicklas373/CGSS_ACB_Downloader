@@ -124,7 +124,10 @@ if gennamelist:
 	namelist.close()
 query=db.execute("select name,hash from manifests where name like 'b/%.acb'")
 bgm=version+"/bgm"
-os.makedirs(bgm)
+if os.path.isdir(version+"\\bgm\\"):
+    print("")
+else:
+    os.makedirs(bgm)
 fp1=open(version+"\\bgm\\b_ren1.bat",'w')
 fp2=open(version+"\\bgm\\b_ren2.bat",'w')
 for name,hash in query:
@@ -155,7 +158,10 @@ fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.acb'")
 sound=version+"/sound"
-os.makedirs(sound)
+if os.path.isdir(version+"\\sound\\"):
+    print("")
+else:
+    os.makedirs(sound)
 fp1=open(version+"\\sound\\l_ren1.bat",'w')
 fp2=open(version+"\\sound\\l_ren2.bat",'w')
 for name,hash in query:
@@ -185,8 +191,11 @@ for name,hash in query:
 fp1.close()
 fp2.close()
 query=db.execute("select name,hash from manifests where name like 'l/%.awb'")
-sound=version+"/solo"
-os.makedirs(solo)
+solo=version+"/solo"
+if os.path.isdir(version+"\\solo\\"):
+    print("")
+else:
+    os.makedirs(solo)
 fp1=open(version+"\\solo\\s_ren1.bat",'w')
 fp2=open(version+"\\solo\\s_ren2.bat",'w')
 for name,hash in query:
