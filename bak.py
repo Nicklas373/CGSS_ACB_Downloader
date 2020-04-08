@@ -7,8 +7,10 @@ import shutil
 # define the name of the directory to be created
 path_bgm = "bgm/"
 path_sound = "sound/"
+path_solo = "solo/"
 path_bgm_moved = "bgm_acb"
 path_sound_moved = "sound_acb"
+path_solo_moved = "solo_acb"
 
 # define move all files to specific directory command
 files = os.listdir(path_bgm)
@@ -34,4 +36,16 @@ except OSError:
 else:
      print ("Moving files from %s to static directory success" % path_sound_moved)
 
+# define move all files to specific directory command
+files = os.listdir(path_solo)
+
+os.mkdir(path_solo_moved)
+try:
+    for f in files:
+        shutil.copy(path_solo+f, path_solo_moved)
+except OSError:
+    print ("Copy files from %s to static directory failed" % path_solo_moved)
+else:
+     print ("Moving files from %s to static directory success" % path_solo_moved)
+     
 print ("Script done, finally :p")

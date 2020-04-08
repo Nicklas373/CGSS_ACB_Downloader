@@ -184,6 +184,37 @@ for name,hash in query:
 			print("\tFile "+hash+'('+name+')'+" already exists")
 fp1.close()
 fp2.close()
+query=db.execute("select name,hash from manifests where name like 'l/%.awb'")
+sound=version+"/solo"
+os.makedirs(solo)
+fp1=open(version+"\\solo\\s_ren1.bat",'w')
+fp2=open(version+"\\solo\\s_ren2.bat",'w')
+for name,hash in query:
+	fp1.write("ren "+hash+' '+name[17:]+'\n')
+	fp2.write("ren "+name[17:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\solo\\"+hash):
+		if verbose:
+			print("\tDownloading file "+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\solo\\"+hash,dl_headers)
+	else:
+		if md5chk:
+			with open("\\solo\\"+hash,'rb') as fp:
+				buf=fp.read()
+				fp.close()
+				md5res=hashlib.md5(buf).hexdigest()
+				del(buf)
+			if md5res!=hash:
+				if verbose:
+					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\solo\\"+hash,dl_headers)
+			elif verbose:
+				print("\tFile "+hash+'('+name+')'+" already exists")
+		elif verbose:
+			print("\tFile "+hash+'('+name+')'+" already exists")
+fp1.close()
+fp2.close()
 db.close()
 if verbose:
 	print("\tFinished analysing database ...")
