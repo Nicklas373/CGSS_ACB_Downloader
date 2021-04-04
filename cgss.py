@@ -494,12 +494,108 @@ for name,hash in query:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
 			print("\tFile "+hash+'('+name+')'+" already exists")
-query=db.execute("select name,hash from manifests where name like 'l/song_9008_part/%.awb'")
-part_7=version+"/solo/song_1011_part"
-if os.path.isdir(version+"\\solo\\song_1011_part\\"):
+query=db.execute("select name,hash from manifests where name like 'l/song_9012_part/%.awb'")
+part_7=version+"/solo/song_9012_part"
+if os.path.isdir(version+"\\solo\\song_9012_part\\"):
     print("")
 else:
     os.makedirs(part_7)
+fp1=open(version+"\\solo\\song_9012_part\\p_ren1.bat",'w')
+fp2=open(version+"\\solo\\song_9012_part\\p_ren2.bat",'w')
+for name,hash in query:
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\solo\\song_9012_part\\"+hash):
+		if verbose:
+			print("\tDownloading file "+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\solo\\song_9012_part\\"+hash,dl_headers)
+	else:
+		if md5chk:
+			with open("\\solo\\song_9012_part\\"+hash,'rb') as fp:
+				buf=fp.read()
+				fp.close()
+				md5res=hashlib.md5(buf).hexdigest()
+				del(buf)
+			if md5res!=hash:
+				if verbose:
+					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\solo\\song_9012_part\\"+hash,dl_headers)
+			elif verbose:
+				print("\tFile "+hash+'('+name+')'+" already exists")
+		elif verbose:
+			print("\tFile "+hash+'('+name+')'+" already exists")
+query=db.execute("select name,hash from manifests where name like 'l/song_9017_part/%.awb'")
+part_8=version+"/solo/song_9017_part"
+if os.path.isdir(version+"\\solo\\song_9017_part\\"):
+    print("")
+else:
+    os.makedirs(part_8)
+fp1=open(version+"\\solo\\song_9017_part\\p_ren1.bat",'w')
+fp2=open(version+"\\solo\\song_9017_part\\p_ren2.bat",'w')
+for name,hash in query:
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\solo\\song_9017_part\\"+hash):
+		if verbose:
+			print("\tDownloading file "+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\solo\\song_9017_part\\"+hash,dl_headers)
+	else:
+		if md5chk:
+			with open("\\solo\\song_9017_part\\"+hash,'rb') as fp:
+				buf=fp.read()
+				fp.close()
+				md5res=hashlib.md5(buf).hexdigest()
+				del(buf)
+			if md5res!=hash:
+				if verbose:
+					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\solo\\song_9017_part\\"+hash,dl_headers)
+			elif verbose:
+				print("\tFile "+hash+'('+name+')'+" already exists")
+		elif verbose:
+			print("\tFile "+hash+'('+name+')'+" already exists")
+query=db.execute("select name,hash from manifests where name like 'l/song_9033_part/%.awb'")
+part_9=version+"/solo/song_9033_part"
+if os.path.isdir(version+"\\solo\\song_9033_part\\"):
+    print("")
+else:
+    os.makedirs(part_9)
+fp1=open(version+"\\solo\\song_9033_part\\p_ren1.bat",'w')
+fp2=open(version+"\\solo\\song_9033_part\\p_ren2.bat",'w')
+for name,hash in query:
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\solo\\song_9033_part\\"+hash):
+		if verbose:
+			print("\tDownloading file "+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\solo\\song_9033_part\\"+hash,dl_headers)
+	else:
+		if md5chk:
+			with open("\\solo\\song_9033_part\\"+hash,'rb') as fp:
+				buf=fp.read()
+				fp.close()
+				md5res=hashlib.md5(buf).hexdigest()
+				del(buf)
+			if md5res!=hash:
+				if verbose:
+					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\solo\\song_9017_part\\"+hash,dl_headers)
+			elif verbose:
+				print("\tFile "+hash+'('+name+')'+" already exists")
+		elif verbose:
+			print("\tFile "+hash+'('+name+')'+" already exists")	
+query=db.execute("select name,hash from manifests where name like 'l/song_1011_part/%.awb'")
+part_9=version+"/solo/song_1011_part"
+if os.path.isdir(version+"\\solo\\song_1011_part\\"):
+    print("")
+else:
+    os.makedirs(part_9)
 fp1=open(version+"\\solo\\song_1011_part\\p_ren1.bat",'w')
 fp2=open(version+"\\solo\\song_1011_part\\p_ren2.bat",'w')
 for name,hash in query:
@@ -527,11 +623,11 @@ for name,hash in query:
 		elif verbose:
 			print("\tFile "+hash+'('+name+')'+" already exists")
 query=db.execute("select name,hash from manifests where name like 'l/song_2001_part/%.awb'")
-part_8=version+"/solo/song_2001_part"
+part_10=version+"/solo/song_2001_part"
 if os.path.isdir(version+"\\solo\\song_2001_part\\"):
     print("")
 else:
-    os.makedirs(part_8)
+    os.makedirs(part_10)
 fp1=open(version+"\\solo\\song_2001_part\\p_ren1.bat",'w')
 fp2=open(version+"\\solo\\song_2001_part\\p_ren2.bat",'w')
 for name,hash in query:
@@ -559,11 +655,11 @@ for name,hash in query:
 		elif verbose:
 			print("\tFile "+hash+'('+name+')'+" already exists")
 query=db.execute("select name,hash from manifests where name like 'l/song_2004_part/%.awb'")
-part_9=version+"/solo/song_2004_part"
+part_11=version+"/solo/song_2004_part"
 if os.path.isdir(version+"\\solo\\song_2004_part\\"):
     print("")
 else:
-    os.makedirs(part_9)
+    os.makedirs(part_11)
 fp1=open(version+"\\solo\\song_2004_part\\p_ren1.bat",'w')
 fp2=open(version+"\\solo\\song_2004_part\\p_ren2.bat",'w')
 for name,hash in query:
@@ -586,6 +682,70 @@ for name,hash in query:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
 				dlfilefrmurl(url,version+"\\solo\\song_2004_part\\"+hash,dl_headers)
+			elif verbose:
+				print("\tFile "+hash+'('+name+')'+" already exists")
+		elif verbose:
+			print("\tFile "+hash+'('+name+')'+" already exists")
+query=db.execute("select name,hash from manifests where name like 'l/song_2005_part/%.awb'")
+part_12=version+"/solo/song_2005_part"
+if os.path.isdir(version+"\\solo\\song_2005_part\\"):
+    print("")
+else:
+    os.makedirs(part_12)
+fp1=open(version+"\\solo\\song_2005_part\\p_ren1.bat",'w')
+fp2=open(version+"\\solo\\song_2005_part\\p_ren2.bat",'w')
+for name,hash in query:
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\solo\\song_2005_part\\"+hash):
+		if verbose:
+			print("\tDownloading file "+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\solo\\song_2005_part\\"+hash,dl_headers)
+	else:
+		if md5chk:
+			with open("\\solo\\song_2005_part\\"+hash,'rb') as fp:
+				buf=fp.read()
+				fp.close()
+				md5res=hashlib.md5(buf).hexdigest()
+				del(buf)
+			if md5res!=hash:
+				if verbose:
+					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\solo\\song_2005_part\\"+hash,dl_headers)
+			elif verbose:
+				print("\tFile "+hash+'('+name+')'+" already exists")
+		elif verbose:
+			print("\tFile "+hash+'('+name+')'+" already exists")
+query=db.execute("select name,hash from manifests where name like 'l/song_2010_part/%.awb'")
+part_13=version+"/solo/song_2010_part"
+if os.path.isdir(version+"\\solo\\song_2010_part\\"):
+    print("")
+else:
+    os.makedirs(part_13)
+fp1=open(version+"\\solo\\song_2010_part\\p_ren1.bat",'w')
+fp2=open(version+"\\solo\\song_2010_part\\p_ren2.bat",'w')
+for name,hash in query:
+	fp1.write("ren "+hash+' '+name[2:]+'\n')
+	fp2.write("ren "+name[2:]+' '+hash+'\n')
+	if not os.path.exists(version+"\\solo\\song_2010_part\\"+hash):
+		if verbose:
+			print("\tDownloading file "+hash+'('+name+')')
+		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+		dlfilefrmurl(url,version+"\\solo\\song_2010_part\\"+hash,dl_headers)
+	else:
+		if md5chk:
+			with open("\\solo\\song_2010_part\\"+hash,'rb') as fp:
+				buf=fp.read()
+				fp.close()
+				md5res=hashlib.md5(buf).hexdigest()
+				del(buf)
+			if md5res!=hash:
+				if verbose:
+					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+				dlfilefrmurl(url,version+"\\solo\\song_2010_part\\"+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
@@ -618,102 +778,6 @@ for name,hash in query:
 					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
 				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
 				dlfilefrmurl(url,version+"\\se\\"+hash,dl_headers)
-			elif verbose:
-				print("\tFile "+hash+'('+name+')'+" already exists")
-		elif verbose:
-			print("\tFile "+hash+'('+name+')'+" already exists")
-query=db.execute("select name,hash from manifests where name like 'l/song_9017_part/%.awb'")
-part_10=version+"/solo/song_9017_part"
-if os.path.isdir(version+"\\solo\\song_9017_part\\"):
-    print("")
-else:
-    os.makedirs(part_10)
-fp1=open(version+"\\solo\\song_9017_part\\p_ren1.bat",'w')
-fp2=open(version+"\\solo\\song_9017_part\\p_ren2.bat",'w')
-for name,hash in query:
-	fp1.write("ren "+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\solo\\song_9017_part\\"+hash):
-		if verbose:
-			print("\tDownloading file "+hash+'('+name+')')
-		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-		dlfilefrmurl(url,version+"\\solo\\song_9017_part\\"+hash,dl_headers)
-	else:
-		if md5chk:
-			with open("\\solo\\song_9017_part\\"+hash,'rb') as fp:
-				buf=fp.read()
-				fp.close()
-				md5res=hashlib.md5(buf).hexdigest()
-				del(buf)
-			if md5res!=hash:
-				if verbose:
-					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
-				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-				dlfilefrmurl(url,version+"\\solo\\song_9017_part\\"+hash,dl_headers)
-			elif verbose:
-				print("\tFile "+hash+'('+name+')'+" already exists")
-		elif verbose:
-			print("\tFile "+hash+'('+name+')'+" already exists")
-query=db.execute("select name,hash from manifests where name like 'l/song_9033_part/%.awb'")
-part_11=version+"/solo/song_9033_part"
-if os.path.isdir(version+"\\solo\\song_9033_part\\"):
-    print("")
-else:
-    os.makedirs(part_11)
-fp1=open(version+"\\solo\\song_9033_part\\p_ren1.bat",'w')
-fp2=open(version+"\\solo\\song_9033_part\\p_ren2.bat",'w')
-for name,hash in query:
-	fp1.write("ren "+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\solo\\song_9033_part\\"+hash):
-		if verbose:
-			print("\tDownloading file "+hash+'('+name+')')
-		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-		dlfilefrmurl(url,version+"\\solo\\song_9033_part\\"+hash,dl_headers)
-	else:
-		if md5chk:
-			with open("\\solo\\song_9033_part\\"+hash,'rb') as fp:
-				buf=fp.read()
-				fp.close()
-				md5res=hashlib.md5(buf).hexdigest()
-				del(buf)
-			if md5res!=hash:
-				if verbose:
-					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
-				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-				dlfilefrmurl(url,version+"\\solo\\song_9033_part\\"+hash,dl_headers)
-			elif verbose:
-				print("\tFile "+hash+'('+name+')'+" already exists")
-		elif verbose:
-			print("\tFile "+hash+'('+name+')'+" already exists")
-query=db.execute("select name,hash from manifests where name like 'l/song_2010_part/%.awb'")
-part_12=version+"/solo/song_2010_part"
-if os.path.isdir(version+"\\solo\\song_2010_part\\"):
-    print("")
-else:
-    os.makedirs(part_12)
-fp1=open(version+"\\solo\\song_2010_part\\p_ren1.bat",'w')
-fp2=open(version+"\\solo\\song_2010_part\\p_ren2.bat",'w')
-for name,hash in query:
-	fp1.write("ren "+hash+' '+name[2:]+'\n')
-	fp2.write("ren "+name[2:]+' '+hash+'\n')
-	if not os.path.exists(version+"\\solo\\song_2010_part\\"+hash):
-		if verbose:
-			print("\tDownloading file "+hash+'('+name+')')
-		url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-		dlfilefrmurl(url,version+"\\solo\\song_2010_part\\"+hash,dl_headers)
-	else:
-		if md5chk:
-			with open("\\solo\\song_2010_part\\"+hash,'rb') as fp:
-				buf=fp.read()
-				fp.close()
-				md5res=hashlib.md5(buf).hexdigest()
-				del(buf)
-			if md5res!=hash:
-				if verbose:
-					print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
-				url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-				dlfilefrmurl(url,version+"\\solo\\song_2010_part\\"+hash,dl_headers)
 			elif verbose:
 				print("\tFile "+hash+'('+name+')'+" already exists")
 		elif verbose:
