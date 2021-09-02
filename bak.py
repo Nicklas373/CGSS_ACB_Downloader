@@ -1,61 +1,29 @@
 # import the os module
-import os
+import os, os.path
 
 # import the shutil module (move directory)
 import shutil
 
+# import the numpy module (for array)
+import numpy as np
+
 # define the name of the directory to be created
-path_bgm = "bgm/"
-path_sound = "sound/"
-path_solo = "solo/"
-path_se = "se/"
-path_bgm_moved = "bgm_acb"
-path_sound_moved = "sound_acb"
-path_solo_moved = "solo_acb"
-path_se_moved = "se_acb"
+cgss_win_path = "C:/Users/Nickl/Downloads/GitHub/CGSS_ACB_Downloader"
+cgss_manifest_ver = "/10087800"
+path_orig = np.array(["bgm/", "sound/", "solo/", "se/"])
+path_moved = np.array(["bgm_acb", "sound_acb", "solo_acb", "se_acb"])
 
 # define move all files to specific directory command
-files = os.listdir(path_bgm)
-
-os.mkdir(path_bgm_moved)
-try:
-    shutil.copytree(path_bgm, path_bgm_moved, dirs_exist_ok=True)
-except OSError:
-    print ("Copy files from %s to static directory failed" % path_bgm_moved)
-else:
-     print ("Moving files from %s to static directory success" % path_bgm_moved)
-
-# define move all files to specific directory command
-files = os.listdir(path_sound)
-
-os.mkdir(path_sound_moved)
-try:
-    shutil.copytree(path_sound, path_sound_moved, dirs_exist_ok=True)
-except OSError:
-    print ("Copy files from %s to static directory failed" % path_sound_moved)
-else:
-     print ("Moving files from %s to static directory success" % path_sound_moved)
-
-# define move all files to specific directory command
-files = os.listdir(path_solo)
-
-os.mkdir(path_solo_moved)
-try:
-    shutil.copytree(path_solo, path_solo_moved, dirs_exist_ok=True)
-except OSError:
-    print ("Copy files from %s to static directory failed" % path_solo_moved)
-else:
-     print ("Moving files from %s to static directory success" % path_solo_moved)
-
-# define move all files to specific directory command
-files = os.listdir(path_se)
-
-os.mkdir(path_se_moved)
-try:
-    shutil.copytree(path_se, path_se_moved, dirs_exist_ok=True)
-except OSError:
-    print ("Copy files from %s to static directory failed" % path_se_moved)
-else:
-     print ("Moving files from %s to static directory success" % path_se_moved)
+i = 0
+while i < 4:
+    files = os.listdir(path_orig[i])
+    os.mkdir(path_moved[i])
+    try:
+        shutil.copytree(path_orig[i], path_moved[i], dirs_exist_ok=True)
+    except OSError:
+        print ("Copy files from %s to static directory failed" % path_moved[i])
+    else:
+        print ("Moving files from %s to static directory success" % path_moved[i])
+    i += 1
      
 print ("Script done, finally :p")
