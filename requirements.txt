@@ -1,2 +1,3 @@
 requests
 lz4
+numpy
