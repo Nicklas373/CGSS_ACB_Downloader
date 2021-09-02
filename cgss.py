@@ -124,21 +124,21 @@ if gennamelist:
 	query.close()
 	namelist.close()
 song_in_folder = np.array(["bgm", "sound", "solo", "se"])
-song_in_alias = np.array(["b", "l", "s", "se"])
+song_in_alias = np.array(["b", "l", "s", "s"])
 i = 0
-while i < 5:
+while i < 4:
         query=db.execute("select name,hash from manifests where name like '"+song_in_alias[i]+"/%.acb'")
         cgss_folder=version+"/"+song_in_folder[i]
-        if os.path.isdir(version + "\\" + song_in_folder[i] + "\\"):
+        if os.path.isdir(version+"\\"+song_in_folder[i]+"\\"):
             print("")
         else:
             os.makedirs(cgss_folder)
-        fp1=open(version+"\\" + song_in_folder[i] + "\\" + song_in_alias[i] + "_ren1.bat",'w')
-        fp2=open(version+"\\" + song_in_folder[i] + "\\" + song_in_alias[i] + "_ren2.bat",'w')
+        fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
+        fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
         for name,hash in query:
                 fp1.write("ren "+hash+' '+name[2:]+'\n')
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
-                if not os.path.exists(version + "\\" + song_in_folder[i] + "\\" + hash):
+                if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
                                 print("\tDownloading file "+hash+'('+name+')')
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
