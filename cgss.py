@@ -5,7 +5,8 @@ def usage():
 	print("\tUsage:run.py [-v <VERSION>] [-g] [-s] [-m]")
 	return
 
-import os,sys
+import os,sys, os.path
+from os import path
 import requests
 import json
 import sqlite3,hashlib
@@ -69,10 +70,33 @@ if not version:
                         print("")
 
 if verbose:
-	print("\tGame Version = "+version)
-if not os.path.exists(".\\"+version):
-	os.mkdir(version)
-
+        with open('Static_version', 'r') as f:
+                version_orig = f.read()
+                f.close()
+                print("\tCurrent manifest version = "+version_orig)
+                print("\tNew manifest version = "+version)
+                if path.exists(version_orig):
+                        if version_orig < version:
+                                print("Current version with the latest manifest is outdated")
+                                os.mkdir(".\\"+version)
+                                try:
+                                        shutil.copytree(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
+                                except OSError:
+                                        print ("\tCopy files from %s to static directory failed" % version)
+                                shutil.rmtree(".\\"+version_orig)
+                                with open('Static_version', 'w') as f:
+                                        f.write(version)
+                                        f.close()
+                                        print("\tRe-writing old static manifest with the latest one")
+                        elif version_orig == version:
+                                print("\tCurrent version with the latest manifest is same")
+                                sys.exit()
+                        elif version_orig > version:
+                                print("\tCurrent version with the latest manifest is unknown")
+                                sys.exit()
+                else:
+                        os.mkdir(version)
+                        
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
 if not os.path.exists(".\\manifests"):
@@ -123,6 +147,7 @@ if gennamelist:
 		namelist.write(hashlib.sha1(name.encode()).hexdigest()+'\n')
 	query.close()
 	namelist.close()
+	
 song_in_folder = np.array(["bgm", "sound", "solo", "se"])
 song_in_alias = np.array(["b", "l", "s", "s"])
 i = 0
@@ -160,6 +185,7 @@ while i < 4:
         fp1.close()
         fp2.close()
         i += 1
+        
 song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part", "song_1201_part", "song_2001_part", "song_2004_part", "song_2005_part", "song_2006_part", "song_2007_part", "song_2010_part", "song_5005_part", "song_5007_part", "song_9003_part", "song_9004_part", "song_9008_part", "song_9012_part", "song_9014_part", "song_9015_part", "song_9017_part", "song_9024_part", "song_9033_part"])
 for song_in_query in song_part_list:
         query=db.execute("select name,hash from manifests where name like 'l/"+ song_in_query + "/%.awb'")
@@ -194,5 +220,11 @@ for song_in_query in song_part_list:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
+        
 print("\tCopying python file for next process ...")
-shutil.copy("bak.py", version)
+try:
+        shutil.copy("bak.py", version)
+except OSError:
+        print("\tBackup script not found!")
+        sys.exit()
+sys.exit()
