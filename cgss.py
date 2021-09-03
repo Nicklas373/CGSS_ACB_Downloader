@@ -7,6 +7,8 @@ def usage():
 
 import os,sys, os.path
 from os import path
+from datetime import date
+from pathlib import Path
 import requests
 import json
 import sqlite3,hashlib
@@ -18,8 +20,8 @@ import numpy as np
 def dlfilefrmurl(url,path,headers):
 	r=requests.get(url,headers=headers)
 	fp=open(path,'wb')
-	if verbose:
-		print("\tWriting into disk ...")
+	#if verbose:
+		#print("\tWriting into disk ...")
 	fp.write(r.content)
 	fp.close()
 	ldate=r.headers['Last-Modified']
@@ -32,6 +34,7 @@ version=None
 gennamelist=False
 verbose=True
 md5chk=False
+cgss_win_path = "C:/Users/Nickl/Downloads/GitHub/CGSS_ACB_Downloader/logs"
 args=iter(sys.argv[1:])
 for i in args:
 	if i=='-v' or i=='--version' or i=='-V' or i=='--version':
@@ -55,7 +58,8 @@ for i in args:
 if not version:
         if verbose:
                 try:
-                        print("\tGetting game version ...")
+                        print("\tCGSS ACB Downloader } Starting!")
+                        print("\tfrom @ACA4DFA4 | Update & Maintain by @Nicklas373")
                         url="https://starlight.kirara.ca/api/v1/info"
                         r=requests.get(url)
                         jsonData=json.loads(r.content)
@@ -70,32 +74,38 @@ if not version:
                         print("")
 
 if verbose:
-        with open('Static_version', 'r') as f:
-                version_orig = f.read()
-                f.close()
-                print("\tCurrent manifest version = "+version_orig)
-                print("\tNew manifest version = "+version)
-                if path.exists(version_orig):
-                        if version_orig < version:
-                                print("Current version with the latest manifest is outdated")
-                                os.mkdir(".\\"+version)
-                                try:
-                                        shutil.copytree(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
-                                except OSError:
-                                        print ("\tCopy files from %s to static directory failed" % version)
-                                shutil.rmtree(".\\"+version_orig)
-                                with open('Static_version', 'w') as f:
-                                        f.write(version)
-                                        f.close()
-                                        print("\tRe-writing old static manifest with the latest one")
-                        elif version_orig == version:
-                                print("\tCurrent version with the latest manifest is same")
-                                sys.exit()
-                        elif version_orig > version:
-                                print("\tCurrent version with the latest manifest is unknown")
-                                sys.exit()
+        f=Path("Static_version")
+        f=open(f)
+        version_orig = f.read()
+        f.close()
+        print("\tCurrent manifest version = "+version_orig)
+        print("\tNew manifest version = "+version)
+        if path.exists(version_orig):
+                if version_orig < version:
+                        print("\tCurrent version with the latest manifest is outdated")
+                        os.mkdir(".\\"+version)
+                        try:
+                                shutil.copytree(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
+                        except OSError:
+                                print ("\tCopy files from %s to static directory failed" % version)
+                        shutil.rmtree(".\\"+version_orig)
+                        f=Path("Static_version")
+                        f=open(f, 'w')
+                        f.write(version)
+                        f.close()
+                        print("\tRe-writing old static manifest with the latest one")
+                elif version_orig == version:
+                        print("\tCurrent version with the latest manifest is same")
+                        print("\tRe-checking manifest")
+                elif version_orig > version:
+                        print("\tCurrent version with the latest manifest is unknown")
+                        sys.exit(1)
                 else:
                         os.mkdir(version)
+        if path.exists(cgss_win_path):
+                print("")
+        else:
+                os.makedirs(cgss_win_path)
                         
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
@@ -160,12 +170,19 @@ while i < 4:
             os.makedirs(cgss_folder)
         fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
         fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
+        today=date.today()
+        f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
+        f.write("---------------"+str(today)+"---------------\n")
+        f.write("Current Manifest Version: "+str(version)+"\n")
+        f.close()
         for name,hash in query:
                 fp1.write("ren "+hash+' '+name[2:]+'\n')
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
-                                print("\tDownloading file "+hash+'('+name+')')
+                                f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
+                                f.write(name[2:]+" "+hash+"\n")
+                                f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
                 else:
@@ -184,6 +201,9 @@ while i < 4:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
+        f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
+        f.write("----------------------------------------\n")
+        f.close()
         i += 1
         
 song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part", "song_1201_part", "song_2001_part", "song_2004_part", "song_2005_part", "song_2006_part", "song_2007_part", "song_2010_part", "song_5005_part", "song_5007_part", "song_9003_part", "song_9004_part", "song_9008_part", "song_9012_part", "song_9014_part", "song_9015_part", "song_9017_part", "song_9024_part", "song_9033_part"])
@@ -196,12 +216,22 @@ for song_in_query in song_part_list:
             os.makedirs(part)
         fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
+        f=Path(cgss_win_path+"/"+song_in_query+".txt")
+        f.touch(exist_ok=True)
+        f=open(f, 'a')
+        f.write("---------------"+str(today)+"---------------\n")
+        f.write("Current Manifest Version: "+str(version)+"\n")
+        f.close()
         for name,hash in query:
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\solo\\"+ song_in_query + "\\"+hash):
                         if verbose:
-                                print("\tDownloading file "+hash+'('+name+')')
+                                f=Path(cgss_win_path+"/"+song_in_query+".txt")
+                                f.touch(exist_ok=True)
+                                f=open(f, 'a')
+                                f.write(name[2:]+" "+hash+"\n")
+                                f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\solo\\"+ song_in_query + "\\"+hash,dl_headers)
                 else:
@@ -220,11 +250,16 @@ for song_in_query in song_part_list:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
+        f=Path(cgss_win_path+"/"+song_in_query+".txt")
+        f.touch(exist_ok=True)
+        f=open(f, 'a')
+        f.write("----------------------------------------\n")
+        f.close()
         
 print("\tCopying python file for next process ...")
 try:
         shutil.copy("bak.py", version)
 except OSError:
         print("\tBackup script not found!")
-        sys.exit()
-sys.exit()
+        sys.exit(1)
+sys.exit(1)
