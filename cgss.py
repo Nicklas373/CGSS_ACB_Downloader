@@ -99,7 +99,7 @@ if verbose:
                         print("\tRe-checking manifest")
                 elif version_orig > version:
                         print("\tCurrent version with the latest manifest is unknown")
-                        sys.exit(1)
+                        sys.exit()
                 else:
                         os.mkdir(version)
         if path.exists(cgss_win_path):
@@ -261,5 +261,5 @@ try:
         shutil.copy("bak.py", version)
 except OSError:
         print("\tBackup script not found!")
-        sys.exit(1)
-sys.exit(1)
+        sys.exit()
+sys.exit()
