@@ -2,22 +2,22 @@
 This is a python based script that can download ACB assets files for BGM, Sound / Live and Solo directory on database.
 
 # Project Status
-![Build](https://img.shields.io/badge/build-passing-green.svg) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10087800-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20210902-blue)
+![Build](https://img.shields.io/badge/build-passing-green.svg) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10088200-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20210906-blue)
 
 How it's work :
 1. Script will check latest manifest version that available on server
-2. Script will download manifest, following with BGM, Sound and Solo file that still in hash name
-3. Script will create separate directory for each BGM, Sound and Solo acb files
-4. Script will create bat file to write exact name for each hash code file (and you can execute it to get exact name with .acb file)
+2. Script will download lz4 compressed database and then download assets for BGM, Sound, Solo, SE file in the database
+3. Script will create separate directory for each downloaded assets files
+4. Script will create bat file to write exact name for each hash code file (and you can execute it to get exact name with .acb or .awb file)
 5. Script complete
 
 What's next :
 1. Execute bak.py to create backup from renaming files on MANIFEST_VERSION/bak.py
-1. Execute b_ren1.bat,b_ren2.bat to rename files to acb from MANIFEST_VERSION/bgm_acb, l_ren1.bat, l_ren2.bat and s_ren1.bat, s_ren2.bat to acb from MANIFEST_VERSION/sound_acb 
+1. Execute bat files in every directory inside manifest version folder name 
 2. Download [DeretoreToolkit](https://github.com/OpenCGSS/DereTore)
 4. Extract deretore toolkit and go to folder release
 5. Drag and drop your acb file that want to extract to program called "ACB2WAV.exe" on bgm_acb or sound_acb to deretore-toolkit/release
-6. WAV files will available on your acb current directory (bgm_acb/sound_acb/solo_acb)
+6. WAV files will available on your acb current directory (bgm_acb/sound_acb/solo_acb/solo_part_awb/se_acb)
 
 Dependency:
 1. Python v3.8
