@@ -30,6 +30,15 @@ def dlfilefrmurl(url,path,headers):
 	os.utime(path,(os.stat(path).st_atime,timestamp))
 	r.close()
 
+suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+def humansize(nbytes):
+    i = 0
+    while nbytes >= 1024 and i < len(suffixes)-1:
+        nbytes /= 1024.
+        i += 1
+    f = ('%.2f' % nbytes).rstrip('0').rstrip('.')
+    return '%s %s' % (f, suffixes[i])
+
 version=None
 gennamelist=False
 verbose=True
@@ -85,9 +94,11 @@ if verbose:
                         print("\tCurrent version with the latest manifest is outdated")
                         os.mkdir(".\\"+version)
                         try:
-                                shutil.copytree(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
+                                print("\tMoving files from current manifest to latest manifest ...")
+                                shutil.move(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
                         except OSError:
                                 print ("\tCopy files from %s to static directory failed" % version)
+                        print("\tRemoving old manifest files ...")
                         shutil.rmtree(".\\"+version_orig)
                         f=Path("Static_version")
                         f=open(f, 'w')
@@ -96,10 +107,10 @@ if verbose:
                         print("\tRe-writing old static manifest with the latest one")
                 elif version_orig == version:
                         print("\tCurrent version with the latest manifest is same")
-                        print("\tRe-checking manifest")
+                        print("\tRe-checking manifest ...")
                 elif version_orig > version:
                         print("\tCurrent version with the latest manifest is unknown")
-                        sys.exit()
+                        sys.exit(1)
                 else:
                         os.mkdir(version)
         if path.exists(cgss_win_path):
@@ -158,11 +169,12 @@ if gennamelist:
 	query.close()
 	namelist.close()
 	
-song_in_folder = np.array(["bgm", "sound", "solo", "se"])
-song_in_alias = np.array(["b", "l", "s", "s"])
+song_in_folder = np.array(["bgm", "sound", "se"])
+song_in_alias = np.array(["b", "l", "s"])
 i = 0
-while i < 4:
-        query=db.execute("select name,hash from manifests where name like '"+song_in_alias[i]+"/%.acb'")
+while i < 3:
+        print("\tDownloading assets for: "+song_in_folder[i]+"...")
+        query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb'")
         cgss_folder=version+"/"+song_in_folder[i]
         if os.path.isdir(version+"\\"+song_in_folder[i]+"\\"):
             print("")
@@ -175,13 +187,13 @@ while i < 4:
         f.write("---------------"+str(today)+"---------------\n")
         f.write("Current Manifest Version: "+str(version)+"\n")
         f.close()
-        for name,hash in query:
+        for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[2:]+'\n')
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
                                 f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
-                                f.write(name[2:]+" "+hash+"\n")
+                                f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
@@ -208,12 +220,20 @@ while i < 4:
         
 song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part", "song_1201_part", "song_2001_part", "song_2004_part", "song_2005_part", "song_2006_part", "song_2007_part", "song_2010_part", "song_5005_part", "song_5007_part", "song_9003_part", "song_9004_part", "song_9008_part", "song_9012_part", "song_9014_part", "song_9015_part", "song_9017_part", "song_9024_part", "song_9033_part"])
 for song_in_query in song_part_list:
-        query=db.execute("select name,hash from manifests where name like 'l/"+ song_in_query + "/%.awb'")
+        print("\tDownloading assets for: "+song_in_query+"...")
+        query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
         part=version+"/solo/"+ song_in_query
-        if os.path.isdir(version+"\\solo\\"+ song_in_query + "\\"):
-            print("")
+        if os.path.isdir(version+"\\solo\\"):
+                if os.path.isdir(version+"\\solo\\"+song_in_query+"\\"):
+                    print("")
+                else:
+                    os.makedirs(part)
         else:
-            os.makedirs(part)
+                os.makedirs(version+"/solo")
+                if os.path.isdir(version+"\\solo\\"+song_in_query+"\\"):
+                    print("")
+                else:
+                    os.makedirs(part)
         fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
         f=Path(cgss_win_path+"/"+song_in_query+".txt")
@@ -222,7 +242,7 @@ for song_in_query in song_part_list:
         f.write("---------------"+str(today)+"---------------\n")
         f.write("Current Manifest Version: "+str(version)+"\n")
         f.close()
-        for name,hash in query:
+        for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\solo\\"+ song_in_query + "\\"+hash):
@@ -230,7 +250,7 @@ for song_in_query in song_part_list:
                                 f=Path(cgss_win_path+"/"+song_in_query+".txt")
                                 f.touch(exist_ok=True)
                                 f=open(f, 'a')
-                                f.write(name[2:]+" "+hash+"\n")
+                                f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\solo\\"+ song_in_query + "\\"+hash,dl_headers)
