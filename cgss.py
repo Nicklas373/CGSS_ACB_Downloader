@@ -225,18 +225,15 @@ song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part",
 for song_in_query in song_part_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
-        part=version+"/solo/"+ song_in_query
+        part=version+"/solo/"+song_in_query
         if os.path.isdir(version+"\\solo\\"):
                 if os.path.isdir(version+"\\solo\\"+song_in_query+"\\"):
-                    print("")
+                        print("")
                 else:
-                    os.makedirs(part)
+                        os.makedirs(part)
         else:
                 os.makedirs(version+"/solo")
-                if os.path.isdir(version+"\\solo\\"+song_in_query+"\\"):
-                    print("")
-                else:
-                    os.makedirs(part)
+                os.makedirs(part)
         fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
         f=Path(cgss_logs+"/"+song_in_query+".txt")
