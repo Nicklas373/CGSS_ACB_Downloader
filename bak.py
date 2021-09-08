@@ -8,7 +8,7 @@ import shutil
 import numpy as np
 
 # define the name of the directory to be created
-cgss_win_path = "C:/Users/Nickl/Downloads/GitHub/CGSS_ACB_Downloader"
+cgss_win_path = os.getcwd()
 path_orig = np.array(["bgm/", "sound/", "solo/", "se/"])
 path_moved = np.array(["bgm_acb", "sound_acb", "solo_acb", "se_acb"])
 with open(cgss_win_path + '/Static_version', 'r') as f:
