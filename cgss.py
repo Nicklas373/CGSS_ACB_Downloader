@@ -20,8 +20,6 @@ import numpy as np
 def dlfilefrmurl(url,path,headers):
 	r=requests.get(url,headers=headers)
 	fp=open(path,'wb')
-	#if verbose:
-		#print("\tWriting into disk ...")
 	fp.write(r.content)
 	fp.close()
 	ldate=r.headers['Last-Modified']
@@ -43,7 +41,8 @@ version=None
 gennamelist=False
 verbose=True
 md5chk=False
-cgss_win_path = "C:/Users/Nickl/Downloads/GitHub/CGSS_ACB_Downloader/logs"
+cgss_win_path=os.getcwd()
+cgss_logs=cgss_win_path+"/logs"
 args=iter(sys.argv[1:])
 for i in args:
 	if i=='-v' or i=='--version' or i=='-V' or i=='--version':
@@ -114,7 +113,11 @@ if verbose:
                 else:
                         os.mkdir(version)
         if path.exists(cgss_win_path):
-                print("")
+                if path.exists(cgss_logs):
+                        print("")
+                else:
+                        os.makedirs(cgss_logs)
+                        
         else:
                 os.makedirs(cgss_win_path)
                         
@@ -183,7 +186,7 @@ while i < 3:
         fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
         fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
         today=date.today()
-        f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
+        f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
         f.write("---------------"+str(today)+"---------------\n")
         f.write("Current Manifest Version: "+str(version)+"\n")
         f.close()
@@ -192,7 +195,7 @@ while i < 3:
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
-                                f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
+                                f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
@@ -213,7 +216,7 @@ while i < 3:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-        f=open(cgss_win_path+"/"+song_in_folder[i]+".txt", 'a')
+        f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
         f.write("----------------------------------------\n")
         f.close()
         i += 1
@@ -236,7 +239,7 @@ for song_in_query in song_part_list:
                     os.makedirs(part)
         fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
-        f=Path(cgss_win_path+"/"+song_in_query+".txt")
+        f=Path(cgss_logs+"/"+song_in_query+".txt")
         f.touch(exist_ok=True)
         f=open(f, 'a')
         f.write("---------------"+str(today)+"---------------\n")
@@ -247,7 +250,7 @@ for song_in_query in song_part_list:
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\solo\\"+ song_in_query + "\\"+hash):
                         if verbose:
-                                f=Path(cgss_win_path+"/"+song_in_query+".txt")
+                                f=Path(cgss_logs+"/"+song_in_query+".txt")
                                 f.touch(exist_ok=True)
                                 f=open(f, 'a')
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
@@ -270,7 +273,7 @@ for song_in_query in song_part_list:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-        f=Path(cgss_win_path+"/"+song_in_query+".txt")
+        f=Path(cgss_logs+"/"+song_in_query+".txt")
         f.touch(exist_ok=True)
         f=open(f, 'a')
         f.write("----------------------------------------\n")
