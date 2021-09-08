@@ -179,10 +179,10 @@ while i < 3:
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb'")
         cgss_folder=version+"/"+song_in_folder[i]
-        if path.exists(version+"\\"+song_in_folder[i]+"\\"):
-            print("")
-        else:
+        if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"):
             os.makedirs(cgss_folder)
+        else:
+            print("")
         fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
         fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
         today=date.today()
@@ -226,14 +226,14 @@ for song_in_query in song_part_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
         part=version+"/solo/"+song_in_query
-        if path.exists(version+"\\solo\\"):
-                if path.exists(version+"\\solo\\"+song_in_query+"\\"):
-                        print("")
-                else:
-                        os.makedirs(part)
-        else:
+        if not os.path.exists(version+"\\solo\\"):
                 os.makedirs(version+"/solo")
                 os.makedirs(part)
+        else:
+                if not os.path.exists(version+"\\solo\\"+song_in_query+"\\"):
+                        os.makedirs(part)
+                else:
+                        print("")
         fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
         f=Path(cgss_logs+"/"+song_in_query+".txt")
