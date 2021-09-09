@@ -82,7 +82,7 @@ if not version:
                         print("")
 
 if verbose:
-        f=Path(".\\Static_version")
+        f=Path("Static_version")
         f=open(f)
         version_orig = f.read()
         f.close()
@@ -101,7 +101,7 @@ if verbose:
                                 print("\tCopy files from %s to static directory failed" % version)
                         print("\tRemoving old manifest files ...")
                         shutil.rmtree(".\\"+version_orig)
-                        f=Path(".\\Static_version")
+                        f=Path("Static_version")
                         f=open(f, 'w')
                         f.write(version)
                         f.close()
@@ -197,7 +197,7 @@ while i < 3:
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
-                                f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
+                                f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
@@ -245,7 +245,7 @@ for song_in_query in song_part_list:
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\solo\\"+ song_in_query + "\\"+hash):
                         if verbose:
-                                f=Path(cgss_logs+"/"+song_in_query+".txt")
+                                f=Path(cgss_logs+"\\"+song_in_query+".txt")
                                 f.touch(exist_ok=True)
                                 f=open(f, 'a')
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
