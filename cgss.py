@@ -42,7 +42,7 @@ gennamelist=False
 verbose=True
 md5chk=False
 cgss_win_path=os.getcwd()
-cgss_logs=cgss_win_path+"/logs"
+cgss_logs=cgss_win_path+"\\logs"
 args=iter(sys.argv[1:])
 for i in args:
 	if i=='-v' or i=='--version' or i=='-V' or i=='--version':
@@ -66,7 +66,7 @@ for i in args:
 if not version:
         if verbose:
                 try:
-                        print("\tCGSS ACB Downloader } Starting!")
+                        print("\tCGSS ACB Downloader | Starting!")
                         print("\tfrom @ACA4DFA4 | Update & Maintain by @Nicklas373")
                         url="https://starlight.kirara.ca/api/v1/info"
                         r=requests.get(url)
@@ -94,7 +94,7 @@ if verbose:
                         os.mkdir(".\\"+version)
                         try:
                                 print("\tMoving files from current manifest to latest manifest ...")
-                                shutil.move(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
+                                shutil.copytree(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
                         except OSError:
                                 print ("\tCopy files from %s to static directory failed" % version)
                         print("\tRemoving old manifest files ...")
@@ -112,14 +112,14 @@ if verbose:
                         sys.exit(1)
                 else:
                         os.mkdir(version)
-        if path.exists(cgss_win_path):
-                if path.exists(cgss_logs):
-                        print("")
-                else:
-                        os.makedirs(cgss_logs)
-                        
+        if path.exists(cgss_logs):
+                print("")
         else:
-                os.makedirs(cgss_win_path)
+                os.makedirs(cgss_logs)
+        if path.exists(cgss_win_path+version+"\\solo"):
+                print("")
+        else:
+                os.makedirs(cgss_win_path+version+"\\solo")
                         
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
@@ -178,15 +178,15 @@ i = 0
 while i < 3:
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb'")
-        cgss_folder=version+"/"+song_in_folder[i]
-        if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"):
-            os.makedirs(cgss_folder)
-        else:
+        cgss_folder=version+"\\"+song_in_folder[i]
+        if path.exists(version+"\\"+song_in_folder[i]+"\\"):
             print("")
+        else:
+            os.makedirs(cgss_folder)
         fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
         fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
         today=date.today()
-        f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
+        f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
         f.write("---------------"+str(today)+"---------------\n")
         f.write("Current Manifest Version: "+str(version)+"\n")
         f.close()
@@ -216,7 +216,7 @@ while i < 3:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-        f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
+        f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
         f.write("----------------------------------------\n")
         f.close()
         i += 1
@@ -226,17 +226,13 @@ for song_in_query in song_part_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
         part=version+"/solo/"+song_in_query
-        if not os.path.exists(version+"\\solo\\"):
-                os.makedirs(version+"/solo")
-                os.makedirs(part)
+        if path.exists(part):
+                print("")
         else:
-                if not os.path.exists(version+"\\solo\\"+song_in_query+"\\"):
-                        os.makedirs(part)
-                else:
-                        print("")
+                os.makedirs(part)
         fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
-        f=Path(cgss_logs+"/"+song_in_query+".txt")
+        f=Path(cgss_logs+"\\"+song_in_query+".txt")
         f.touch(exist_ok=True)
         f=open(f, 'a')
         f.write("---------------"+str(today)+"---------------\n")
@@ -253,7 +249,7 @@ for song_in_query in song_part_list:
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                        dlfilefrmurl(url,version+"\\solo\\"+ song_in_query + "\\"+hash,dl_headers)
+                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
                 else:
                         if md5chk:
                                 with open("\\solo\\"+ song_in_query + "\\"+hash,'rb') as fp:
@@ -270,7 +266,7 @@ for song_in_query in song_part_list:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-        f=Path(cgss_logs+"/"+song_in_query+".txt")
+        f=Path(cgss_logs+"\\"+song_in_query+".txt")
         f.touch(exist_ok=True)
         f=open(f, 'a')
         f.write("----------------------------------------\n")
