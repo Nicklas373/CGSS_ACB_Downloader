@@ -82,7 +82,7 @@ if not version:
                         print("")
 
 if verbose:
-        f=Path("Static_version")
+        f=Path(".\\Static_version")
         f=open(f)
         version_orig = f.read()
         f.close()
@@ -92,14 +92,16 @@ if verbose:
                 if version_orig < version:
                         print("\tCurrent version with the latest manifest is outdated")
                         os.mkdir(".\\"+version)
+                        old_manifest=os.listdir(".\\"+version_orig)
                         try:
                                 print("\tMoving files from current manifest to latest manifest ...")
-                                shutil.copytree(".\\"+version_orig, ".\\"+version, dirs_exist_ok=True)
+                                for x in old_manifest:
+                                        shutil.move(".\\"+version_orig+"\\"+x,".\\"+version+"\\"+x)
                         except OSError:
-                                print ("\tCopy files from %s to static directory failed" % version)
+                                print("\tCopy files from %s to static directory failed" % version)
                         print("\tRemoving old manifest files ...")
                         shutil.rmtree(".\\"+version_orig)
-                        f=Path("Static_version")
+                        f=Path(".\\Static_version")
                         f=open(f, 'w')
                         f.write(version)
                         f.close()
