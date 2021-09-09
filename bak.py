@@ -11,7 +11,7 @@ import numpy as np
 cgss_win_path = os.getcwd()
 path_orig = np.array(["bgm/", "sound/", "solo/", "se/"])
 path_moved = np.array(["bgm_acb", "sound_acb", "solo_acb", "se_acb"])
-with open(cgss_win_path + '/Static_version', 'r') as f:
+with open(cgss_win_path+'\\Static_version', 'r') as f:
         cgss_manifest_ver = f.read()
         f.close()
 
@@ -31,7 +31,7 @@ while i < 4:
 # remove unused or unindexed files from original directory
 i = 0
 while i < 4:
-    for root, _, files in os.walk(cgss_win_path + "/" + cgss_manifest_ver + "/" + path_orig[i]):
+    for root, _, files in os.walk(cgss_win_path+"\\"+cgss_manifest_ver+"\\"+path_orig[i]):
         for f in files:
             fullpath = os.path.join(root, f)
             try:
