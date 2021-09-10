@@ -41,8 +41,8 @@ version=None
 gennamelist=False
 verbose=True
 md5chk=False
-cgss_win_path=os.getcwd()
-cgss_logs=cgss_win_path+"\\logs"
+cgss_path=os.getcwd()
+cgss_logs=cgss_path+"\\logs"
 args=iter(sys.argv[1:])
 for i in args:
 	if i=='-v' or i=='--version' or i=='-V' or i=='--version':
@@ -118,10 +118,10 @@ if verbose:
                 print("")
         else:
                 os.makedirs(cgss_logs)
-        if path.exists(cgss_win_path+version+"\\solo"):
+        if path.exists(cgss_path+"\\"+version+"\\solo"):
                 print("")
         else:
-                os.makedirs(cgss_win_path+version+"\\solo")
+                os.makedirs(cgss_path+"\\"+version+"\\solo")
                         
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
@@ -180,7 +180,7 @@ i = 0
 while i < 3:
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb'")
-        cgss_folder=version+"\\"+song_in_folder[i]
+        cgss_folder=cgss_path+"\\"+version+"\\"+song_in_folder[i]
         if path.exists(version+"\\"+song_in_folder[i]+"\\"):
             print("")
         else:
@@ -197,18 +197,20 @@ while i < 3:
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
-                                f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
+                                f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
                 else:
                         if md5chk:
-                                with open("\\"+song_in_folder[i]+"\\"+hash,'rb') as fp:
-                                        buf=fp.read()
-                                        fp.close()
-                                        md5res=hashlib.md5(buf).hexdigest()
-                                        del(buf)
+                                fp=Path(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+hash)
+                                fp.touch(exist_ok=True)
+                                fp=open(fp,'rb')
+                                buf=fp.read()
+                                fp.close()
+                                md5res=hashlib.md5(buf).hexdigest()
+                                del(buf)
                                 if md5res!=hash:
                                         if verbose:
                                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
@@ -227,13 +229,13 @@ song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part",
 for song_in_query in song_part_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
-        part=version+"/solo/"+song_in_query
+        part=version+"\\solo\\"+song_in_query
         if path.exists(part):
                 print("")
         else:
                 os.makedirs(part)
-        fp1=open(version+"\\solo\\"+ song_in_query + "\\p_ren1.bat",'w')
-        fp2=open(version+"\\solo\\"+ song_in_query + "\\p_ren2.bat",'w')
+        fp1=open(version+"\\solo\\"+song_in_query+"\\p_ren1.bat",'w')
+        fp2=open(version+"\\solo\\"+song_in_query+"\\p_ren2.bat",'w')
         f=Path(cgss_logs+"\\"+song_in_query+".txt")
         f.touch(exist_ok=True)
         f=open(f, 'a')
@@ -243,7 +245,7 @@ for song_in_query in song_part_list:
         for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
-                if not os.path.exists(version+"\\solo\\"+ song_in_query + "\\"+hash):
+                if not os.path.exists(version+"\\solo\\"+song_in_query+"\\"+hash):
                         if verbose:
                                 f=Path(cgss_logs+"\\"+song_in_query+".txt")
                                 f.touch(exist_ok=True)
@@ -254,16 +256,18 @@ for song_in_query in song_part_list:
                         dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
                 else:
                         if md5chk:
-                                with open("\\solo\\"+ song_in_query + "\\"+hash,'rb') as fp:
-                                        buf=fp.read()
-                                        fp.close()
-                                        md5res=hashlib.md5(buf).hexdigest()
-                                        del(buf)
+                                fp=Path(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"\\"+hash)
+                                fp.touch(exist_ok=True)
+                                fp=open(fp,'rb')
+                                buf=fp.read()
+                                fp.close()
+                                md5res=hashlib.md5(buf).hexdigest()
+                                del(buf)
                                 if md5res!=hash:
                                         if verbose:
                                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                                        dlfilefrmurl(url,version+"\\solo\\"+ song_in_query + "\\"+hash,dl_headers)
+                                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
                                 elif verbose:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
