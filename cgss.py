@@ -197,7 +197,7 @@ while i < 3:
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
-                                f=open(cgss_logs+"/"+song_in_folder[i]+".txt", 'a')
+                                f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
                                 f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
