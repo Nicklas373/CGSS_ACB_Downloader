@@ -8,12 +8,13 @@ import shutil
 import numpy as np
 
 # define the name of the directory to be created
-cgss_win_path = os.getcwd()
+cgss_path = os.getcwd()
 path_orig = np.array(["bgm/", "sound/", "solo/", "se/"])
 path_moved = np.array(["bgm_acb", "sound_acb", "solo_acb", "se_acb"])
-with open(cgss_win_path+'\\Static_version', 'r') as f:
-        cgss_manifest_ver = f.read()
-        f.close()
+f=Path(cgss_win_path+"\\Static_version")
+f=open(f, 'r')
+cgss_manifest_ver=f.read()
+f.close()
 
 # define move all files to specific directory command
 i = 0
