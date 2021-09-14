@@ -113,7 +113,14 @@ if verbose:
                         print("\tCurrent version with the latest manifest is unknown")
                         sys.exit(1)
                 else:
-                        os.mkdir(version)
+                        print("")
+        else:
+                os.mkdir(version)
+                f=Path("Static_version")
+                f=open(f, 'w')
+                f.write(version)
+                f.close()
+                print("\tRe-writing static manifest with the latest one")
         if path.exists(cgss_logs):
                 print("")
         else:
