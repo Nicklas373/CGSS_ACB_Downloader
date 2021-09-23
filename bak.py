@@ -32,7 +32,7 @@ while i < 4:
 # remove unused or unindexed files from original directory
 i = 0
 while i < 4:
-    for root, _, files in os.walk(cgss_win_path+"\\"+cgss_manifest_ver+"\\"+path_orig[i]):
+    for root, _, files in os.walk(cgss_win_path+"\\"+cgss_manifest_ver+"\\"+path_moved[i]):
         for f in files:
             fullpath = os.path.join(root, f)
             try:
