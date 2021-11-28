@@ -285,10 +285,4 @@ for song_in_query in song_part_list:
         f.write("----------------------------------------\n")
         f.close()
         
-print("\tCopying python file for next process ...")
-try:
-        shutil.copy("bak.py", version)
-except OSError:
-        print("\tBackup script not found!")
-        sys.exit()
 sys.exit()
