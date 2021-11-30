@@ -2,7 +2,7 @@
 This is a python based script that can download ACB assets files for BGM, Sound / Live and Solo directory on database.
 
 # Project Status
-![Build](https://app.travis-ci.com/Nicklas373/CGSS_ACB_Downloader.svg?branch=master) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10089000-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20210930-blue)
+![Build](https://app.travis-ci.com/Nicklas373/CGSS_ACB_Downloader.svg?branch=master) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10090800-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20211130-blue)
 
 How it's work :
 1. Script will check latest manifest version that available on server
@@ -36,3 +36,5 @@ Thanks to :
 - [Deretore Tookit](https://github.com/OpenCGSS/DereTore)
 - [CPLs](https://nyaa.si/view/1131944)
 - [esterTion](https://github.com/esterTion/cgss_master_db_diff)
+
+# HANA-CI Build Project || 2016-2021
