@@ -37,4 +37,8 @@ Thanks to :
 - [CPLs](https://nyaa.si/view/1131944)
 - [esterTion](https://github.com/esterTion/cgss_master_db_diff)
 
+
+# Copyright
+The copyright of CGSS and its related content is held by [BANDAI NAMCO Entertainment Inc.](https://bandainamcoent.co.jp/)
+
 # HANA-CI Build Project || 2016-2021
