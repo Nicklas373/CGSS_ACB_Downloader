@@ -232,7 +232,7 @@ while i < 3:
         f.close()
         i += 1
         
-song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part", "song_1201_part", "song_2001_part", "song_2004_part", "song_2005_part", "song_2006_part", "song_2007_part", "song_2008_part", "song_2010_part", "song_2011_part", "song_5005_part", "song_5007_part", "song_9003_part", "song_9004_part", "song_9008_part", "song_9012_part", "song_9014_part", "song_9015_part", "song_9017_part", "song_9024_part", "song_9033_part"])
+song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part", "song_1201_part", "song_2001_part", "song_2004_part", "song_2005_part", "song_2006_part", "song_2007_part", "song_2008_part", "song_2010_part", "song_2011_part", "song_5005_part", "song_5007_part", "song_9003_part", "song_9004_part", "song_9008_part", "song_9012_part", "song_9014_part", "song_9015_part", "song_9017_part", "song_9024_part", "song_9033_part", "song_9903_part"])
 for song_in_query in song_part_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
@@ -284,5 +284,3 @@ for song_in_query in song_part_list:
         f=open(f, 'a')
         f.write("----------------------------------------\n")
         f.close()
-        
-sys.exit()
