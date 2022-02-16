@@ -36,6 +36,7 @@ Thanks to :
 - [Deretore Tookit](https://github.com/OpenCGSS/DereTore)
 - [CPLs](https://nyaa.si/view/1131944)
 - [esterTion](https://github.com/esterTion/cgss_master_db_diff)
+- [cisagov/travis-wait-improved](https://github.com/cisagov/travis-wait-improved)
 
 
 # Copyright
