@@ -20,7 +20,7 @@ What's next :
 6. WAV files will available on your acb current directory (bgm_acb/sound_acb/solo_acb/solo_part_awb/se_acb)
 
 Dependency:
-1. Python v3.8
+1. Python v3.9
 2. requests (module)
 3. lz4 (module)
 4. numpy (module)
