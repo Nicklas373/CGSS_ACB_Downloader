@@ -14,5 +14,5 @@ before_script:
   - chmod +x bak.py
 
 script: 
-      - travis-wait-improved --timeout 30m python3 cgss.py
+      - travis-wait-improved --timeout 40m python3 cgss.py
       
