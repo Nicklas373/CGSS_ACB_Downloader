@@ -2,7 +2,7 @@
 This is a python based script that can download ACB assets files for BGM, Sound / Live and Solo directory on database.
 
 # Project Status
-![Build](https://app.travis-ci.com/Nicklas373/CGSS_ACB_Downloader.svg?branch=master) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10093100-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20220216-blue)
+![Build](https://app.travis-ci.com/Nicklas373/CGSS_ACB_Downloader.svg?branch=master) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10093300-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20220216-blue)
 
 How it's work :
 1. Script will check latest manifest version that available on server
@@ -31,15 +31,14 @@ NOTE:
 3. I'm not pro at python, so if any error or you find any error just comment and wait it, i'm not promise to serve quick fix at the moment
 
 Thanks to :
-- [ACADFA4](https://github.com/ACA4DFA4/CGSS_ACB_Downloader)
-- [Toyobashi/CGSS_ASSET_Downloader](https://github.com/toyobayashi/CGSSAssetsDownloader)
-- [Deretore Tookit](https://github.com/OpenCGSS/DereTore)
+- [ACADFA4/CGSS_ACB_Downloader](https://github.com/ACA4DFA4/CGSS_ACB_Downloader)
+- [cisagov/travis-wait-improved](https://github.com/cisagov/travis-wait-improved)
 - [CPLs](https://nyaa.si/view/1131944)
 - [esterTion](https://github.com/esterTion/cgss_master_db_diff)
-- [cisagov/travis-wait-improved](https://github.com/cisagov/travis-wait-improved)
-
+- [OpenCGSS/DereTore](https://github.com/OpenCGSS/DereTore)
+- [Toyobashi/CGSS_ASSET_Downloader](https://github.com/toyobayashi/CGSSAssetsDownloader)
 
 # Copyright
 The copyright of CGSS and its related content is held by [BANDAI NAMCO Entertainment Inc.](https://bandainamcoent.co.jp/)
 
-# HANA-CI Build Project || 2016-2021
+# HANA-CI Build Project || 2016-2022
