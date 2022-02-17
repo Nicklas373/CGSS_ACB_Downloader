@@ -186,7 +186,7 @@ song_in_alias = np.array(["b", "l", "s"])
 i = 0
 while i < 3:
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
-        query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb'")
+        query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb' and size > '7000'")
         cgss_folder=cgss_path+"\\"+version+"\\"+song_in_folder[i]
         if path.exists(version+"\\"+song_in_folder[i]+"\\"):
             print("")
