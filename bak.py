@@ -31,22 +31,5 @@ while i < 4:
     else:
         print("\tMoving files from %s to static directory success" % path_moved[i])
     i += 1
-    
-# remove unused or unindexed files from original directory
-i = 0
-while i < 4:
-    for root, _, files in os.walk(path_backup+path_moved[i]):
-        for f in files:
-            fullpath = os.path.join(root, f)
-            try:
-                if os.path.getsize(fullpath) < 7 * 1024:   #set file size in kb
-                    if fullpath.endswith('.bat'):
-                        print("\t" + fullpath + " was excluded due a bat files")
-                    else:
-                        print("\t" +fullpath + " was removed, size below than 7kb")
-                        os.remove(fullpath)
-            except WindowsError:
-                print("\tError" + fullpath)
-    i += 1
             
 print("\tScript done, finally :p")
