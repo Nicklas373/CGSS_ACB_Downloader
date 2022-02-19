@@ -164,7 +164,7 @@ if not os.path.exists(dbname):
 	del(dat)
 
 if verbose:
-	print("\tAnalysing sqlite3 database ...")
+	print("\tAnalysing sqlite3 database ...\n")
 db=sqlite3.Connection(dbname)
 if gennamelist:
 	if verbose:
@@ -231,9 +231,20 @@ while i < 3:
         f.write("----------------------------------------\n")
         f.close()
         i += 1
-        
-song_part_list = np.array(["song_1009_part", "song_1010_part", "song_1011_part", "song_1201_part", "song_2001_part", "song_2004_part", "song_2005_part", "song_2006_part", "song_2007_part", "song_2008_part", "song_2010_part", "song_2011_part", "song_2018_part", "song_5005_part", "song_5007_part", "song_9003_part", "song_9004_part", "song_9008_part", "song_9012_part", "song_9013_part", "song_9014_part", "song_9015_part", "song_9017_part", "song_9024_part", "song_9033_part", "song_9903_part"])
-for song_in_query in song_part_list:
+
+query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb'")
+if os.path.isfile(cgss_logs+"\\"+"solo_list.txt"):
+        os.remove(cgss_logs+"\\"+"solo_list.txt")
+else:
+        print("")
+
+for name,hash,size in query:
+        f=open(cgss_logs+"\\"+"solo_list.txt", 'a')
+        f.write(name[2:][:-19]+"\n")
+        f.close()
+
+solo_list = np.loadtxt(cgss_logs+"\\"+"solo_list.txt", dtype=str, delimiter=",") 
+for song_in_query in solo_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
         part=version+"\\solo\\"+song_in_query
@@ -284,3 +295,5 @@ for song_in_query in song_part_list:
         f=open(f, 'a')
         f.write("----------------------------------------\n")
         f.close()
+
+print("\tCGSS ACB Downloader | Finished!")
