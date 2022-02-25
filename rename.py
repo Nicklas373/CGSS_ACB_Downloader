@@ -258,12 +258,15 @@ for solo_in_query in solo_list:
                                 solo_id_trim_2 = solo_in_query[5:][:-5]
                                 if (sub_solo_list_in_query[3:] == "_1"):
                                         trim_sub_solo_2 = str(chara_id)+"_1"
+                                        trim_sub_chara_2 = str(chara_name)+"_1"
                                 elif (sub_solo_list_in_query[3:] == "_2"):
                                         trim_sub_solo_2 = str(chara_id)+"_2"
+                                        trim_sub_chara_2 = str(chara_name)+"_2"
                                 else:
                                         trim_sub_solo_2 = str(chara_id)
-                                fp1.write("ren vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+' '+str(music_name.replace('\n',"_"))+"~"+str(chara_name)+".awb"+"\n")
-                                fp2.write("ren "+str(music_name.replace('\n',"_"))+"~"+str(chara_name)+".awb"+' '+"vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+"\n")
+                                        trim_sub_chara_2 = str(chara_name)
+                                fp1.write("ren vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+' '+str(music_name.replace('\n',"_"))+"~"+str(trim_sub_chara_2)+".awb"+"\n")
+                                fp2.write("ren "+str(music_name.replace('\n',"_"))+"~"+str(trim_sub_chara_2)+".awb"+' '+"vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+"\n")
                                 fp1.close
                                 fp2.close           
 
