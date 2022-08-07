@@ -96,7 +96,12 @@ for solo_in_query in solo_list:
                 os.remove(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat")
         else:
                 print("")
-        
+
+if path.exists(cgss_logs+"\\rename"):
+        print("")
+else:
+        os.makedirs(cgss_logs+"\\rename")
+
 print("\tBegin generate music name list from database...")
 print("\tCreate name list for "+version+"/sound in database from manifests ...\n")
 query=manifests_con.execute("select name,hash,size from manifests where name like 'l/song%.acb' and size > '7000' and name not like 'l/song_%_another.acb' and name not like 'l/song_%_call.acb' and name not like 'l/song_%_collab.acb' and name not like 'l/song_%_se.acb' and name not like 'l/song_%_movie.acb'")
@@ -108,16 +113,22 @@ for name,hash,size in query:
             print("")
     f.close()
 
+fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+fp1.write("chcp 65001"+"\n")
+fp2.write("chcp 65001"+"\n")
+fp1.close()
+fp2.close()
+
 song_main_name_list = np.loadtxt(cgss_logs+"\\rename\\"+"song_main_name_list.txt", dtype=str, delimiter=",")
 for song_main_name in song_main_name_list:
     query=music_data_con.execute("select id, name from music_data where id like '"+song_main_name+"'")
     for id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        replace_phase_1 = str(name).replace(' ','_')
-        replace_phase_2 = str(replace_phase_1).replace('\n','')
-        fp1.write("ren song_"+str(id)+".hca"+ ' '+str(replace_phase_2).replace("\n"," ")+".hca"+"\n")
-        fp2.write("ren "+str(replace_phase_2).replace('/n','')+".hca"+' '+"song_"+str(id)+".hca"+"\n")
+        replace_phase_1 = str(name).replace('\n','')
+        fp1.write("ren "+chr(34)+"song_"+str(id)+".hca"+chr(34)+' '+chr(34)+str(replace_phase_1)+".hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+str(replace_phase_1)+".hca"+chr(34)+' '+chr(34)+"song_"+str(id)+".hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
 
@@ -134,8 +145,8 @@ for song_another_name in song_another_name_list:
     for music_id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        fp1.write("ren song_"+music_id+".hca"+ ' '+str(name).replace(' ','_')+"_another.hca"+"\n")
-        fp2.write("ren "+str(name).replace(' ','_')+"_another.hca"+' '+"song_"+music_id+".hca"+"\n")
+        fp1.write("ren "+chr(34)+"song_"+music_id+".hca"+chr(34)+' '+chr(34)+str(name)+".hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+str(name)+".hca"+chr(34)+' '+"song_"+music_id+".hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
 
@@ -152,8 +163,8 @@ for song_call_name in song_call_name_list:
     for music_id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        fp1.write("ren song_"+music_id+".hca"+ ' '+str(name).replace(' ','_')+"_call.hca"+"\n")
-        fp2.write("ren "+str(name).replace(' ','_')+"_call.hca"+' '+"song_"+music_id+".hca"+"\n")
+        fp1.write("ren "+chr(34)+"song_"+music_id+".hca"+chr(34)+' '+chr(34)+str(name)+".hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+str(name)+".hca"+chr(34)+' '+chr(34)+"song_"+music_id+".hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
 
@@ -170,8 +181,8 @@ query=music_data_con.execute("select id, name from music_data where id like '"+s
 for id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        fp1.write("ren song_"+str(id)+".hca"+ ' '+str(name).replace(' ','_')+"_collab.hca"+"\n")
-        fp2.write("ren "+str(name).replace(' ','_')+"_collab.hca"+' '+"song_"+str(id)+".hca"+"\n")
+        fp1.write("ren song_"+str(id)+"_collab.hca"+ ' '+chr(34)+str(name)+"_collab.hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+str(name)+" collab.hca"+chr(34)+' '+chr(34)+"song "+str(id)+"_collab.hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
 
@@ -188,8 +199,8 @@ for song_se_name in song_se_name_list:
     for id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        fp1.write("ren song_"+str(id)+".hca"+ ' '+str(name).replace(' ','_')+"_se.hca"+"\n")
-        fp2.write("ren "+str(name).replace(' ','_')+"_se.hca"+' '+"song_"+str(id)+".hca"+"\n")
+        fp1.write("ren "+chr(34)+"song_"+str(id)+"_se.hca"+chr(34)+' '+chr(34)+str(name)+" se.hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+str(name)+" se.hca"+chr(34)+' '+chr(34)+"song_"+str(id)+"_se.hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
 
@@ -206,8 +217,8 @@ query=music_data_con.execute("select id, name from music_data where id like '"+s
 for id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        fp1.write("ren song_"+str(id)+".hca"+ ' '+str(name).replace(' ','_')+"_movie.hca"+"\n")
-        fp2.write("ren "+str(name).replace(' ','_')+"_movie.hca"+' '+"song_"+str(id)+".hca"+"\n")
+        fp1.write("ren "+chr(34)+"song_"+str(id)+"_movie.hca"+ ' '+chr(34)+str(name)+" movie.hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+str(name)+" movie.hca"+chr(34)+' '+chr(34)+"song_"+str(id)+"_movie.hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
         
@@ -224,8 +235,8 @@ for song_1001_vocal in song_1001_vocal_list:
     for chara_id,name in query:
         fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
-        fp1.write("ren song_1001_"+str(chara_id)+".hca"+ ' お願い_!_シンデレラ~'+str(name).replace(' ','_')+".hca"+"\n")
-        fp2.write("ren お願い_!_シンデレラ~"+str(name).replace(' ','_')+".hca"+' '+"song_1001_"+str(chara_id)+".hca"+"\n")
+        fp1.write("ren "+chr(34)+"song_1001_"+str(chara_id)+".hca"+chr(34)+' ' &'お願い!シンデレラ~'+str(name)+".hca"+chr(34)+"\n")
+        fp2.write("ren "+chr(34)+"お願い!シンデレラ~"+str(name)+".hca"+chr(34)+' '+chr(34)+"song_1001_"+str(chara_id)+".hca"+chr(34)+"\n")
         fp1.close()
         fp2.close()
 
@@ -243,6 +254,8 @@ for solo_in_query in solo_list:
         sub_solo_list = np.loadtxt(cgss_logs+"\\rename\\"+solo_in_query+"_vocal.txt", dtype=str, delimiter=",")
         fp1=open(version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat", 'a', encoding='utf8')
         fp2=open(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat", 'a', encoding='utf8')
+        fp1.write("chcp 65001"+"\n")
+        fp2.write("chcp 65001"+"\n")
         for sub_solo_list_in_query in sub_solo_list:
                 solo_id_trim = solo_in_query[5:][:-5]
                 query1 = music_data_con.execute("select id, name as music_name from music_data where id like '"+solo_id_trim+"'")
@@ -264,9 +277,10 @@ for solo_in_query in solo_list:
                                         trim_sub_chara_2 = str(chara_name)+"_2"
                                 else:
                                         trim_sub_solo_2 = str(chara_id)
-                                        trim_sub_chara_2 = str(chara_name)
-                                fp1.write("ren vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+' '+str(music_name.replace('\n',"_"))+"~"+str(trim_sub_chara_2)+".awb"+"\n")
-                                fp2.write("ren "+str(music_name.replace('\n',"_"))+"~"+str(trim_sub_chara_2)+".awb"+' '+"vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+"\n")
+                                        trim_sub_chara_2 = str(chara_name) 
+                                music_name_trim = music_name.replace('/n',"")
+                                fp1.write("ren "+chr(34)+"vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+chr(34)+' '+chr(34)+str(music_name_trim)+"~"+str(trim_sub_chara_2)+".awb"+chr(34)+"\n")
+                                fp2.write("ren "+chr(34)+str(music_name_trim)+"~"+str(trim_sub_chara_2)+".awb"+chr(34)+' '+chr(34)+"vo_solo_"+solo_id_trim_2+"_0"+str(trim_sub_solo_2)+".awb"+chr(34)+"\n")
                                 fp1.close
                                 fp2.close           
 
@@ -279,8 +293,8 @@ for solo_in_query in solo_list:
         query1 = music_data_con.execute("select id, name as music_name from music_data where id like '"+solo_id_trim+"'")
         for id, music_name in query1:
                 solo_id_trim_2 = solo_in_query[5:][:-5]
-                fp1.write("ren inst_song_"+solo_id_trim_2+".awb"+' '+"inst_"+str(music_name).replace(" ","_")+".awb"+"\n")
-                fp2.write("ren inst_"+str(music_name).replace(" ","_")+".awb"+' '+"inst_song_"+solo_id_trim_2+".awb"+"\n")
+                fp1.write("ren "+chr(34)+"inst_song_"+solo_id_trim_2+".awb"+chr(34)+' '+chr(34)+"inst "+str(music_name)+".awb"+chr(34)+"\n")
+                fp2.write("ren "+chr(34)+"inst "+str(music_name)+".awb"+chr(34)+' '+chr(34)+"inst_song_"+solo_id_trim_2+".awb"+chr(34)+"\n")
         fp1.close
         fp2.close
       
