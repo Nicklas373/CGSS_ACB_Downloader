@@ -16,6 +16,7 @@ from lz4 import block
 import time
 import shutil
 import numpy as np
+import csv
 
 def dlfilefrmurl(url,path,headers):
 	r=requests.get(url,headers=headers)
@@ -43,6 +44,7 @@ verbose=True
 md5chk=False
 cgss_path=os.getcwd()
 cgss_logs=cgss_path+"\\logs"
+csv_header= ['name', 'hash', 'size', 'date', 'manifest_version']
 args=iter(sys.argv[1:])
 for i in args:
 	if i=='-v' or i=='--version' or i=='-V' or i=='--version':
@@ -185,6 +187,7 @@ song_in_folder = np.array(["bgm", "sound", "se"])
 song_in_alias = np.array(["b", "l", "s"])
 i = 0
 while i < 3:
+        csv_path=cgss_logs+"\\"+song_in_folder[i]+".csv"
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb' and size > '7000'")
         cgss_folder=cgss_path+"\\"+version+"\\"+song_in_folder[i]
@@ -195,18 +198,21 @@ while i < 3:
         fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
         fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
         today=date.today()
-        f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
-        f.write("---------------"+str(today)+"---------------\n")
-        f.write("Current Manifest Version: "+str(version)+"\n")
-        f.close()
+        if not os.path.exists(csv_path):
+                f = open(csv_path, 'w', encoding='UTF8', newline='')
+                writer = csv.writer(f)
+                writer.writerow(csv_header)
+                f.close()    
         for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[2:]+'\n')
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
                         if verbose:
-                                f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
-                                f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
-                                f.close()
+                                csv_rows=[name[2:], hash, humansize(size), today, version]
+                                f = open(csv_path, 'a', encoding='UTF8', newline='')
+                                writer = csv.writer(f)
+                                writer.writerow(csv_rows)
+                                f.close()        
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
                 else:
@@ -227,16 +233,11 @@ while i < 3:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-        f=open(cgss_logs+"\\"+song_in_folder[i]+".txt", 'a')
-        f.write("----------------------------------------\n")
-        f.close()
         i += 1
 
 query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb'")
-if os.path.isfile(cgss_logs+"\\"+"solo_list.txt"):
-        os.remove(cgss_logs+"\\"+"solo_list.txt")
-else:
-        print("")
+if os.path.isfile(cgss_logs+"\\"+"solo_list.csv"):
+        os.remove(cgss_logs+"\\"+"solo_list.csv")
 
 for name,hash,size in query:
         f=open(cgss_logs+"\\"+"solo_list.txt", 'a')
@@ -252,23 +253,24 @@ for song_in_query in solo_list:
                 print("")
         else:
                 os.makedirs(part)
+        csv_solo_path=cgss_logs+"\\"+song_in_query+".csv"
         fp1=open(version+"\\solo\\"+song_in_query+"\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+song_in_query+"\\p_ren2.bat",'w')
-        f=Path(cgss_logs+"\\"+song_in_query+".txt")
-        f.touch(exist_ok=True)
-        f=open(f, 'a')
-        f.write("---------------"+str(today)+"---------------\n")
-        f.write("Current Manifest Version: "+str(version)+"\n")
-        f.close()
+        today=date.today()
+        if not os.path.exists(csv_solo_path):
+                f = open(csv_solo_path, 'w', encoding='UTF8', newline='')
+                writer = csv.writer(f)
+                writer.writerow(csv_header)
+                f.close() 
         for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\solo\\"+song_in_query+"\\"+hash):
                         if verbose:
-                                f=Path(cgss_logs+"\\"+song_in_query+".txt")
-                                f.touch(exist_ok=True)
-                                f=open(f, 'a')
-                                f.write(name[2:]+" | "+hash+" | "+humansize(size)+"\n")
+                                csv_solo_rows=[name[2:], hash, humansize(size), today, version]
+                                f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
+                                writer = csv.writer(f)
+                                writer.writerow(csv_solo_rows)
                                 f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
@@ -290,10 +292,5 @@ for song_in_query in solo_list:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-        f=Path(cgss_logs+"\\"+song_in_query+".txt")
-        f.touch(exist_ok=True)
-        f=open(f, 'a')
-        f.write("----------------------------------------\n")
-        f.close()
-
+        
 print("\tCGSS ACB Downloader | Finished!")
