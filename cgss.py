@@ -241,7 +241,8 @@ if os.path.isfile(cgss_logs+"\\"+"solo_list.csv"):
 
 for name,hash,size in query:
         f=open(cgss_logs+"\\"+"solo_list.txt", 'a')
-        f.write(name[2:][:-19]+"\n")
+        newName=name[2:][:-19].replace("/inst_so","")
+        f.write(newName+"\n")
         f.close()
 
 solo_list = np.loadtxt(cgss_logs+"\\"+"solo_list.txt", dtype=str, delimiter=",") 
