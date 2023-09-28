@@ -182,7 +182,7 @@ if gennamelist:
 		namelist.write(hashlib.sha1(name.encode()).hexdigest()+'\n')
 	query.close()
 	namelist.close()
-	
+
 song_in_folder = np.array(["bgm", "sound", "se"])
 song_in_alias = np.array(["b", "l", "s"])
 i = 0
@@ -234,11 +234,11 @@ while i < 3:
         fp1.close()
         fp2.close()
         i += 1
-
-query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb'")
-if os.path.isfile(cgss_logs+"\\"+"solo_list.csv"):
-        os.remove(cgss_logs+"\\"+"solo_list.csv")
-
+        
+query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
+if os.path.isfile(cgss_logs+"\\"+"solo_list.txt"):
+        os.remove(cgss_logs+"\\"+"solo_list.txt")
+        
 for name,hash,size in query:
         f=open(cgss_logs+"\\"+"solo_list.txt", 'a')
         f.write(name[2:][:-19]+"\n")
@@ -247,7 +247,7 @@ for name,hash,size in query:
 solo_list = np.loadtxt(cgss_logs+"\\"+"solo_list.txt", dtype=str, delimiter=",") 
 for song_in_query in solo_list:
         print("\tDownloading assets for: "+song_in_query+"...")
-        query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb'")
+        query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
         part=version+"\\solo\\"+song_in_query
         if path.exists(part):
                 print("")
@@ -288,6 +288,65 @@ for song_in_query in solo_list:
                                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                                         dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
+                                elif verbose:
+                                        print("\tFile "+hash+'('+name+')'+" already exists")
+        fp1.close()
+        fp2.close()
+
+query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%_another.awb'")
+if os.path.isfile(cgss_logs+"\\"+"solo_list_another.txt"):
+        os.remove(cgss_logs+"\\"+"solo_list_another.txt")
+        
+for name,hash,size in query:
+        f=open(cgss_logs+"\\"+"solo_list_another.txt", 'a')
+        f.write(name[2:][:-27]+"\n")
+        f.close()
+
+solo_list = np.loadtxt(cgss_logs+"\\"+"solo_list_another.txt", dtype=str, delimiter=",") 
+for song_in_query in solo_list:
+        new_song_code=song_in_query[5:][:-5]
+        print("\tDownloading assets for: "+song_in_query+"_another...")
+        query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/inst_song_"+new_song_code+"_%.awb'")
+        part=version+"\\solo\\"+song_in_query+"_another"
+        if path.exists(part):
+                print("")
+        else:
+                os.makedirs(part)
+        csv_solo_path=cgss_logs+"\\"+song_in_query+"_another.csv"
+        fp1=open(version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
+        fp2=open(version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
+        today=date.today()
+        if not os.path.exists(csv_solo_path):
+                f = open(csv_solo_path, 'w', encoding='UTF8', newline='')
+                writer = csv.writer(f)
+                writer.writerow(csv_header)
+                f.close() 
+        for name,hash,size in query:
+                fp1.write("ren "+hash+' '+name[17:]+'\n')
+                fp2.write("ren "+name[17:]+' '+hash+'\n')
+                if not os.path.exists(version+"\\solo\\"+song_in_query+"_another\\"+hash):
+                        if verbose:
+                                csv_solo_rows=[name[2:], hash, humansize(size), today, version]
+                                f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
+                                writer = csv.writer(f)
+                                writer.writerow(csv_solo_rows)
+                                f.close()
+                        url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                else:
+                        if md5chk:
+                                fp=Path(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\"+hash)
+                                fp.touch(exist_ok=True)
+                                fp=open(fp,'rb')
+                                buf=fp.read()
+                                fp.close()
+                                md5res=hashlib.md5(buf).hexdigest()
+                                del(buf)
+                                if md5res!=hash:
+                                        if verbose:
+                                                print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
+                                        url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+                                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
                                 elif verbose:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
