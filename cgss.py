@@ -2,21 +2,21 @@
 #!/usr/bin/env python
 
 def usage():
-	print("\tUsage:run.py [-v <VERSION>] [-g] [-s] [-m]")
+	print("\tUsage:cgss.py [-v <VERSION>] [-g] [-s] [-m]")
 	return
 
-import os,sys, os.path
-from os import path
-from datetime import date
-from pathlib import Path
-import requests
-import json
-import sqlite3,hashlib
-from lz4 import block
-import time
-import shutil
-import numpy as np
 import csv
+import json
+import numpy as np
+import requests
+import shutil
+import sqlite3,hashlib
+import os,sys, os.path
+import time
+from datetime import date
+from lz4 import block
+from pathlib import Path
+from os import path
 
 def dlfilefrmurl(url,path,headers):
 	r=requests.get(url,headers=headers)
@@ -187,7 +187,7 @@ song_in_folder = np.array(["bgm", "sound", "se"])
 song_in_alias = np.array(["b", "l", "s"])
 i = 0
 while i < 3:
-        csv_path=cgss_logs+"\\"+song_in_folder[i]+".csv"
+        csv_path=cgss_logs+"\\csv\\"+song_in_folder[i]+".csv"
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb' and size > '7000'")
         cgss_folder=cgss_path+"\\"+version+"\\"+song_in_folder[i]
@@ -236,15 +236,15 @@ while i < 3:
         i += 1
         
 query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
-if os.path.isfile(cgss_logs+"\\"+"solo_list.txt"):
-        os.remove(cgss_logs+"\\"+"solo_list.txt")
+if os.path.isfile(cgss_logs+"\\txt\\"+"solo_list.txt"):
+        os.remove(cgss_logs+"\\txt\\"+"solo_list.txt")
         
 for name,hash,size in query:
-        f=open(cgss_logs+"\\"+"solo_list.txt", 'a')
+        f=open(cgss_logs+"\\txt\\"+"solo_list.txt", 'a')
         f.write(name[2:][:-19]+"\n")
         f.close()
 
-solo_list = np.loadtxt(cgss_logs+"\\"+"solo_list.txt", dtype=str, delimiter=",") 
+solo_list = np.loadtxt(cgss_logs+"\\txt\\"+"solo_list.txt", dtype=str, delimiter=",") 
 for song_in_query in solo_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
@@ -253,7 +253,7 @@ for song_in_query in solo_list:
                 print("")
         else:
                 os.makedirs(part)
-        csv_solo_path=cgss_logs+"\\"+song_in_query+".csv"
+        csv_solo_path=cgss_logs+"\\csv\\"+song_in_query+".csv"
         fp1=open(version+"\\solo\\"+song_in_query+"\\p_ren1.bat",'w')
         fp2=open(version+"\\solo\\"+song_in_query+"\\p_ren2.bat",'w')
         today=date.today()
@@ -294,15 +294,15 @@ for song_in_query in solo_list:
         fp2.close()
 
 query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%_another.awb'")
-if os.path.isfile(cgss_logs+"\\"+"solo_list_another.txt"):
-        os.remove(cgss_logs+"\\"+"solo_list_another.txt")
+if os.path.isfile(cgss_logs+"\\txt\\"+"solo_list_another.txt"):
+        os.remove(cgss_logs+"\\txt\\"+"solo_list_another.txt")
         
 for name,hash,size in query:
-        f=open(cgss_logs+"\\"+"solo_list_another.txt", 'a')
+        f=open(cgss_logs+"\\txt\\"+"solo_list_another.txt", 'a')
         f.write(name[2:][:-27]+"\n")
         f.close()
 
-solo_list = np.loadtxt(cgss_logs+"\\"+"solo_list_another.txt", dtype=str, delimiter=",") 
+solo_list = np.loadtxt(cgss_logs+"\\txt\\"+"solo_list_another.txt", dtype=str, delimiter=",") 
 for song_in_query in solo_list:
         new_song_code=song_in_query[5:][:-5]
         print("\tDownloading assets for: "+song_in_query+"_another...")
@@ -312,7 +312,7 @@ for song_in_query in solo_list:
                 print("")
         else:
                 os.makedirs(part)
-        csv_solo_path=cgss_logs+"\\"+song_in_query+"_another.csv"
+        csv_solo_path=cgss_logs+"\\csv\\"+song_in_query+"_another.csv"
         fp1=open(version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
         fp2=open(version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
         today=date.today()
