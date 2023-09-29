@@ -43,6 +43,51 @@ xlsx_music_data=cgss_logs+"\\music_data\\music_data.xlsx"
 print("\tCGSS ACB Auto Renamer | Starting!")
 print("\tUpdate & Maintain by @Nicklas373")
 print("\tCleanup old log from rename file is exists! ...")
+
+if os.path.isfile(version+"\\sound\\s_ren1.bat"):
+        os.remove(version+"\\sound\\s_ren1.bat")
+else:
+        print("")
+
+if os.path.isfile(version+"\\sound\\s_ren2.bat"):
+        os.remove(version+"\\sound\\s_ren2.bat")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_1001_vocal_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_1001_vocal_list.txt")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_main_name_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_main_name_list.txt")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_another_name_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_another_name_list.txt")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_call_name_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_call_name_list.txt")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_collab_name_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_collab_name_list.txt")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_movie_name_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_movie_name_list.txt")
+else:
+        print("")
+
+if os.path.isfile(cgss_logs+"\\txt\\song_se_name_list.txt"):
+        os.remove(cgss_logs+"\\txt\\song_se_name_list.txt")
+else:
+        print("")
         
 solo_list = np.loadtxt(cgss_logs+"\\txt\\solo_list.txt", dtype=str, delimiter=",")
 for solo_in_query in solo_list:
