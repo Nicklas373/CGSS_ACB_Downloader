@@ -235,13 +235,16 @@ while i < 3:
         fp2.close()
         i += 1
         
-query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
+query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb' and name not like 'l/song_%_part/inst_song_%_se.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
 if os.path.isfile(cgss_logs+"\\txt\\"+"solo_list.txt"):
         os.remove(cgss_logs+"\\txt\\"+"solo_list.txt")
         
 for name,hash,size in query:
         f=open(cgss_logs+"\\txt\\"+"solo_list.txt", 'a')
-        f.write(name[2:][:-19]+"\n")
+        if "_se" in name:
+                f.write(name[2:][:-21]+"\n")
+        else:
+                f.write(name[2:][:-19]+"\n")
         f.close()
 
 solo_list = np.loadtxt(cgss_logs+"\\txt\\"+"solo_list.txt", dtype=str, delimiter=",") 
@@ -292,7 +295,7 @@ for song_in_query in solo_list:
                                         print("\tFile "+hash+'('+name+')'+" already exists")
         fp1.close()
         fp2.close()
-
+        
 query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%_another.awb'")
 if os.path.isfile(cgss_logs+"\\txt\\"+"solo_list_another.txt"):
         os.remove(cgss_logs+"\\txt\\"+"solo_list_another.txt")
