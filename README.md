@@ -2,7 +2,7 @@
 This is a python based script that can download ACB assets files for BGM, Sound / Live and Solo directory on database.
 
 # Project Status
-![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10115100-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20231118-blue)
+![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10116700-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20231118-blue)
 
 Main functions :
 1. Check latest manifest version that available on server
