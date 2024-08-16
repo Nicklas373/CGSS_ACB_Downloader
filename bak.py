@@ -1,13 +1,15 @@
-# import the os module
-import os, os.path
-from os import path
-from pathlib import Path
+#!py -3
+#!/usr/bin/env python
 
-# import the shutil module (move directory)
-import shutil
-
-# import the numpy module (for array)
+def usage():
+	print("\tUsage:bak.py")
+	return
+    
 import numpy as np
+import os, os.path
+import shutil
+from pathlib import Path
+from os import path
 
 # define the name of the directory to be created
 cgss_win_path = os.getcwd()
