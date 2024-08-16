@@ -298,4 +298,46 @@ for song_in_query in solo_list:
         fp1.close()
         fp2.close()
         
+query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%_another.awb'")
+if os.path.isfile(cgss_logs+"\\txt\\"+"solo_list_another.txt"):
+        os.remove(cgss_logs+"\\txt\\"+"solo_list_another.txt")
+        
+for name,hash,size in query:
+        f=open(cgss_logs+"\\txt\\"+"solo_list_another.txt", 'a')
+        f.write(name[2:][:-27]+"\n")
+        f.close()
+
+solo_list = np.loadtxt(cgss_logs+"\\txt\\"+"solo_list_another.txt", dtype=str, delimiter=",") 
+for song_in_query in solo_list:
+        new_song_code=song_in_query[5:][:-5]
+        print("\tDownloading assets for: "+song_in_query+"_another...")
+        query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/inst_song_"+new_song_code+"_%.awb'")
+        part=version+"\\solo\\"+song_in_query+"_another"
+        if path.exists(part):
+                print("")
+        else:
+                os.makedirs(part)
+        csv_solo_path=cgss_logs+"\\csv\\"+song_in_query+"_another.csv"
+        fp1=open(version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
+        fp2=open(version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
+        today=date.today()
+        if not os.path.exists(csv_solo_path):
+                f = open(csv_solo_path, 'w', encoding='UTF8', newline='')
+                writer = csv.writer(f)
+                writer.writerow(csv_header)
+                f.close() 
+        for name,hash,size in query:
+                fp1.write("ren "+hash+' '+name[17:]+'\n')
+                fp2.write("ren "+name[17:]+' '+hash+'\n')
+                if not os.path.exists(version+"\\solo\\"+song_in_query+"_another\\"+hash):
+                        csv_solo_rows=[name[2:], hash, humansize(size), today, version]
+                        f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
+                        writer = csv.writer(f)
+                        writer.writerow(csv_solo_rows)
+                        f.close()
+                        url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
+                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+        fp1.close()
+        fp2.close()
+        
 print("\tCGSS ACB Downloader | Finished!")

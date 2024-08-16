@@ -10,7 +10,6 @@ install:
   
 before_script:
   - chmod +x cgss.py
-  - chmod +x bak.py
 
 script: 
       - python3 cgss.py

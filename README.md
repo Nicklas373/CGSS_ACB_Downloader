@@ -3,8 +3,12 @@
 This is a python based script that can download ACB assets files for BGM, Sound / Live and Solo directory on database.
 
 # Project Status
+<<<<<<< HEAD
 
 ![Build](https://app.travis-ci.com/Nicklas373/CGSS_ACB_Downloader.svg?branch=master) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10122900-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20240817-blue)
+=======
+![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10116700-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20231118-blue)
+>>>>>>> cb5c340fac825b3e6a8da5afb296539e3aef1cff
 
 Main functions :
 
@@ -17,6 +21,7 @@ What's next :
 1. Execute cgss.py to download all data from latest manifests
 2. Execute bak.py to create backup from original assets
 3. Execute all l_ren%.bat from Sound & Solo backup folder to get codename for each file
+<<<<<<< HEAD
    (For rename make sure to changes region -> administrative -> system locale to japanese
    and check UTF-8 support BETA, before doing rename)
 
@@ -29,6 +34,22 @@ What's next :
 
 - If audio is awb:
 
+=======
+   * For rename make sure to changes region -> administrative -> system locale to japanese
+   and check UTF-8 support BETA, before doing rename
+   
+* If audio is acb:
+4. Open VGMToolbox -> Misc Tools -> Extraction Tools -> Common Archives -> CRI ACB/AWB Archive Extractor
+    - Drop all .acb files in here and wait for extraction process
+    - Search and move all .hca files after extract process from VGMToolbox then move to other specific folder
+    - Remove extraction folder then run specific rename bat script to correct name from codesong.hca to songtitle~vocalist.hca
+    - After sucessfully rename, move all .hca files to Foobar2000 application then convert to .wav
+    - Done
+5. Do step 4 again for BGM, Sound, Solo and SE to get extracted audio files
+    (NOTE: for step 3 only applicable to run once if want to generate new name list)
+    
+* If audio is awb:
+>>>>>>> cb5c340fac825b3e6a8da5afb296539e3aef1cff
 4. After sucessfully rename, move all .awb files to Foobar2000 application then convert to .wav
 
 Dependency:
@@ -65,4 +86,8 @@ Thanks to :
 
 The copyright of CGSS and its related content is held by [BANDAI NAMCO Entertainment Inc.](https://bandainamcoent.co.jp/)
 
+<<<<<<< HEAD
 # HANA-CI Build Project || 2016-2024
+=======
+# HANA-CI Build Project || 2016-2023
+>>>>>>> cb5c340fac825b3e6a8da5afb296539e3aef1cff
