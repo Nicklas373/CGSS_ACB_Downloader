@@ -1,25 +1,25 @@
 #!py -3
 #!/usr/bin/env python
 
-def usage():
-	print("\tUsage:bak.py")
-	return
-    
 import numpy as np
-import os, os.path
+import os, os.path, sys
 import shutil
 from pathlib import Path
-from os import path
 
 # define the name of the directory to be created
 cgss_win_path = os.getcwd()
 path_orig = np.array(["bgm/", "sound/", "solo/", "se/"])
 path_moved = np.array(["bgm_acb", "sound_acb", "solo_acb", "se_acb"])
-f=Path("Static_version")
-f=open(f, 'r')
-cgss_manifest_ver=f.read()
-f.close()
-path_backup = cgss_win_path+"//"+cgss_manifest_ver+"//"
+if os.path.exists("Static_version"):
+    f=Path("Static_version")
+    f=open(f, 'r')
+    cgss_manifest_ver=f.read()
+    f.close()
+    path_backup = cgss_win_path+"//"+cgss_manifest_ver+"//"
+else:
+    print("\tStatic version are not found !")
+    print("\tPlease run cgss.py to get manifests version")
+    sys.exit(1)
 
 # define move all files to specific directory command
 i = 0
