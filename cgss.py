@@ -117,7 +117,7 @@ if not os.path.exists(cgss_path+"\\"+version+"\\solo"):
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
 if not os.path.exists(cgss_path+"\\manifests"):
-	os.mkdir(cgss_path+"\\")
+	os.mkdir(cgss_path+"\\\\manifests")
 dbname=cgss_path+"\\manifests\\manifest_"+version+".db"
 lz4name=cgss_path+"\\manifests\\manifest_"+version+".db.lz4"
 if not os.path.exists(dbname):
