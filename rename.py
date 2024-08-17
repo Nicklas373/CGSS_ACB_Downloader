@@ -1,10 +1,6 @@
 #!py -3
 #!/usr/bin/env python
 
-def usage():
-	print("\tUsage:rename.py")
-	return
-
 import csv
 import numpy as np
 import pandas as pd
@@ -15,24 +11,28 @@ from datetime import date
 from os import path
 from pathlib import Path
 
-version=None
-
-if not version:
-        f=Path("Static_version")
-        f=open(f)
-        version = f.read()
-        f.close()
-        print("\tCurrent manifest version = "+version)
-        print("\tPlease run cgss.py if you want to get latest manifest version!")
-
 cgss_path=os.getcwd()
 cgss_logs=cgss_path+"\\logs"
 csv_header= ['manifest_music_name', 'music_data_name', 'manifest_version', 'date']
 csv_music_data=cgss_logs+"\\music_data\\music_data.csv"
-manifests=".\\manifests\\manifest_"+version+".db"
 music_data_another=".\\local_data\\music_data_another.db"
 music_data=".\\local_data\\music_data.db"
 chara_data=".\\local_data\\chara_data.db"
+old_files = ["\\sound\\s_ren1.bat","\\sound\\s_ren2.bat","\\txt\\song_1001_vocal_list.txt","\\txt\\song_another_name_list.txt",
+                "\\txt\\song_call_name_list.txt","\\txt\\song_collab_name_list.txt","\\txt\\song_movie_name_list.txt","\\txt\\song_se_name_list.txt"]
+
+if not os.path.exists(cgss_path+"\\Static_version"):
+        print("\tPlease run cgss.py if you want to get latest manifest version!")
+elif os.path.exists(cgss_path+"\\Static_version"):
+        f=Path("Static_version")
+        f=open(f)
+        version = f.read()
+        f.close()
+        if version == None:
+                print("\tCurrent manifest version = "+version)
+                print("\tPlease run cgss.py if you want to get latest manifest version!")
+
+manifests=".\\manifests\\manifest_"+version+".db"
 manifests_con=sqlite3.Connection(manifests)
 music_data_con=sqlite3.Connection(music_data)
 music_data_another_con=sqlite3.Connection(music_data_another)
@@ -44,42 +44,23 @@ print("\tCGSS ACB Auto Renamer | Starting!")
 print("\tUpdate & Maintain by @Nicklas373")
 print("\tCleanup old log from rename file is exists! ...")
 
-if not os.path.isfile(version+"\\sound\\s_ren1.bat"):
-        os.remove(version+"\\sound\\s_ren1.bat")
-
-if not os.path.isfile(version+"\\sound\\s_ren2.bat"):
-        os.remove(version+"\\sound\\s_ren2.bat")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_1001_vocal_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_1001_vocal_list.txt")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_main_name_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_main_name_list.txt")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_another_name_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_another_name_list.txt")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_call_name_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_call_name_list.txt")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_collab_name_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_collab_name_list.txt")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_movie_name_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_movie_name_list.txt")
-
-if not os.path.isfile(cgss_logs+"\\txt\\song_se_name_list.txt"):
-        os.remove(cgss_logs+"\\txt\\song_se_name_list.txt")
+for old_log in old_files:
+        if old_log == "\\sound\\s_ren1.bat" or old_log == "\\sound\\s_ren2.bat":
+                if not os.path.exists(cgss_path+"\\"+version+old_log):
+                        os.remove(cgss_path+"\\"+version+old_log)
+        else:
+                if not os.path.exists(cgss_logs+old_log):
+                        os.remove(cgss_logs+old_log)
         
 solo_list = np.loadtxt(cgss_logs+"\\txt\\solo_list.txt", dtype=str, delimiter=",")
 for solo_in_query in solo_list:
-        if not os.path.isfile(cgss_logs+"\\txt\\"+str(solo_in_query)+"_vocal.txt"):
+        if os.path.exists(cgss_logs+"\\txt\\"+str(solo_in_query)+"_vocal.txt"):
                 os.remove(cgss_logs+"\\txt\\"+str(solo_in_query)+"_vocal.txt")
                 
-        if not os.path.isfile(version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat"):
+        if os.path.exists(version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat"):
                 os.remove(version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat")
                 
-        if not os.path.isfile(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat"):
+        if os.path.exists(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat"):
                 os.remove(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat")
         
 print("\tBegin generate music name list from database...")
@@ -92,6 +73,14 @@ for name,hash,size in query:
     else:
             print("")
     f.close()
+
+if os.path.exists(csv_music_data):
+        print("\tCleanup old music data (CSV)..")
+        os.remove(csv_music_data)
+
+if os.path.exists(xlsx_music_data):
+        print("\tCleanup old music data (XLSX)..")
+        os.remove(xlsx_music_data)
 
 song_main_name_list = np.loadtxt(cgss_logs+"\\txt\\"+"song_main_name_list.txt", dtype=str, delimiter=",")
 for song_main_name in song_main_name_list:
@@ -318,10 +307,6 @@ for solo_in_query in solo_list:
                 writer = csv.writer(f)
                 writer.writerow(csv_solo_rows)
                 f.close()
-
-if os.path.isfile(xlsx_music_data):
-        print("\tCleanup old music data (XLSX)..")
-        os.remove(xlsx_music_data)
 
 print("\tDump music data into XLSX!")
 read_file = pd.read_csv(csv_music_data, on_bad_lines='skip')
