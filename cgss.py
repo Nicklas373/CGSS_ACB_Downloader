@@ -14,6 +14,8 @@ from lz4 import block
 from pathlib import Path
 from os import path
 
+platform='iOS'
+
 def dlfilefrmurl(url,path,headers):
 	r=requests.get(url,headers=headers)
 	fp=open(path,'wb')
@@ -65,9 +67,13 @@ else:
         f.write("000000")
         f.close()
         version_orig = "000000"
+
+if version_orig == "":
+        version_orig = "000000"
+
 print("\tCurrent manifest version = "+version_orig)
 print("\tNew manifest version = "+version)
-if not os.path.exists(cgss_path+"\\"+version_orig):
+if os.path.exists(cgss_path+"\\"+version_orig):
         if version_orig < version:
                 print("\tCurrent version with the latest manifest is outdated")
                 if not os.path.exists(cgss_path+"\\"+version):
@@ -90,7 +96,7 @@ if not os.path.exists(cgss_path+"\\"+version_orig):
                 f.write(version)
                 f.close()
                 print("\tRe-writing old static manifest with the latest one")
-                f=Path(".gitignore")
+                f=Path(cgss_path+"\\.gitignore")
                 f=open(f, 'a')
                 f.write("\n"+version+"/")
                 f.close()
@@ -109,12 +115,33 @@ else:
         f.write(version)
         f.close()
         print("\tRe-writing static manifest with the latest one")
+        f=Path(cgss_path+"\\.gitignore")
+        f=open(f, 'a')
+        f.write("\n"+version+"/")
+        f.close()
+        print("\tRe-writing new manifest into .gitignore")
+        
 if not os.path.exists(cgss_logs):
         os.makedirs(cgss_logs)
 if not os.path.exists(cgss_path+"\\"+version+"\\solo"):
         os.makedirs(cgss_path+"\\"+version+"\\solo")
-                        
-dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
+
+android_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
+ios_headers={'User-Agent': 'BNEI0242/96 CFNetwork/808.2.16 Darwin/16.3.01','RES_VER': version,'APP_VER': '10.3.5','OS_VER': 'iPhone OS 10.2','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*','DEVICE_ID': '10FB122A-CC47-4B10-8C78-0D1E6C22119C','DEVICE_NAME': 'iPhone8,1','USER_AGENT': 'BNEI0242/96 CFNetwork/808.2.16 Darwin/16.3.01','IP_ADDRESS': '192.168.12.14','GPU_NAME': 'Apple A9 GPU','KEYCHAIN': '339871861','CARRIER': 'KDDI','IDFA': '3350E88E-ED66-4D46-8B28-D82EA4A6397D'}
+
+if platform != None:
+        if platform == 'Android':
+                headers=android_headers
+                platform='Android'
+        elif platform == 'iOS':
+                headers=ios_headers
+                platform='iOS'
+        else:
+                headers=android_headers
+                platform='Android'
+else:
+        headers=android_headers
+        platform='Android'
 
 if not os.path.exists(cgss_path+"\\manifests"):
 	os.mkdir(cgss_path+"\\\\manifests")
@@ -123,8 +150,8 @@ lz4name=cgss_path+"\\manifests\\manifest_"+version+".db.lz4"
 if not os.path.exists(dbname):
 	if not os.path.exists(lz4name):
 		print("\tDownloading lz4-compressed database ...")
-		url="https://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/Android_AHigh_SHigh"
-		r=requests.get(url,headers=dl_headers)
+		url="http://asset-starlight-stage.akamaized.net/dl/"+version+"/manifests/"+platform+"_AHigh_SHigh"
+		r=requests.get(url,headers=headers)
 		with open(lz4name,'wb') as fp:
 			fp.write(r.content)
 			fp.close()
@@ -149,10 +176,10 @@ if not os.path.exists(dbname):
 print("\tAnalysing sqlite3 database ...\n")
 db=sqlite3.Connection(dbname)
 
-song_in_folder = np.array(["bgm", "sound", "se"])
-song_in_alias = np.array(["b", "l", "s"])
+song_in_folder = np.array(["bgm", "bgm-movie","sound", "se"])
+song_in_alias = np.array(["b", "m", "l", "s"])
 i = 0
-while i < 3:
+while i < len(song_in_folder):
         csv_path=cgss_logs+"\\csv\\"+song_in_folder[i]+".csv"
         print("\tDownloading assets for: "+song_in_folder[i]+"...")
         query=db.execute("select name,hash,size from manifests where name like '"+song_in_alias[i]+"/%.acb' and size > '7000'")
@@ -179,7 +206,7 @@ while i < 3:
                         writer.writerow(csv_rows)
                         f.close()        
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                        dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
+                        dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,headers)
                         print("\tDownloading assets: "+name[2:]+"...")
                 else:
                         fp=Path(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+hash)
@@ -192,12 +219,12 @@ while i < 3:
                         if md5res!=hash:
                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                                dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
+                                dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,headers)
                                 print("\tDownloading assets: "+name[2:]+"...")
         fp1.close()
         fp2.close()
         i += 1
-        
+      
 query=db.execute("select name,hash,size from manifests where name like 'l/song_%_part/inst_song_%.awb' and name not like 'l/song_%_part/inst_song_%_se.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
 
 if not os.path.exists(cgss_logs+"\\txt\\"):
@@ -242,7 +269,7 @@ for song_in_query in solo_list:
                         writer.writerow(csv_solo_rows)
                         f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
+                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,headers)
                         print("\tDownloading assets: "+name[17:]+"...")
                 else:
                         fp=Path(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"\\"+hash)
@@ -255,7 +282,7 @@ for song_in_query in solo_list:
                         if md5res!=hash:
                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                                dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
+                                dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,headers)
                                 print("\tDownloading assets: "+name[17:]+"...")
         fp1.close()
         fp2.close()
@@ -298,7 +325,7 @@ for song_in_query in solo_list:
                         writer.writerow(csv_solo_rows)
                         f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,headers)
                         print("\tDownloading assets: "+name[17:]+"...")
                 else:
                         fp=Path(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\"+hash)
@@ -311,7 +338,7 @@ for song_in_query in solo_list:
                         if md5res!=hash:
                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                                dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                                dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,headers)
                                 print("\tDownloading assets: "+name[17:]+"...")
         fp1.close()
         fp2.close()
@@ -354,7 +381,7 @@ for song_in_query in solo_list:
                         writer.writerow(csv_solo_rows)
                         f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
-                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                        dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,headers)
                         print("\tDownloading assets: "+name[17:]+"...")
         fp1.close()
         fp2.close()
