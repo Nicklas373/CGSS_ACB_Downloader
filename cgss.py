@@ -91,7 +91,8 @@ if path.exists(version_orig):
                 print("\tCurrent version with the latest manifest is unknown")
                 sys.exit(1)
 else:
-        os.mkdir(version)
+        if not os.path.exists(version):
+                os.mkdir(version)
         f=Path("Static_version")
         f=open(f, 'w')
         f.write(version)
@@ -168,6 +169,7 @@ while i < 3:
                         f.close()        
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
+                        print("\tDownloading assets: "+name[2:]+"...")
                 else:
                         fp=Path(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+hash)
                         fp.touch(exist_ok=True)
@@ -180,6 +182,7 @@ while i < 3:
                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                                 dlfilefrmurl(url,version+"\\"+song_in_folder[i]+"\\"+hash,dl_headers)
+                                print("\tDownloading assets: "+name[2:]+"...")
         fp1.close()
         fp2.close()
         i += 1
@@ -229,6 +232,7 @@ for song_in_query in solo_list:
                         f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
+                        print("\tDownloading assets: "+name[17:]+"...")
                 else:
                         fp=Path(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"\\"+hash)
                         fp.touch(exist_ok=True)
@@ -241,6 +245,7 @@ for song_in_query in solo_list:
                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                                 dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"\\"+hash,dl_headers)
+                                print("\tDownloading assets: "+name[17:]+"...")
         fp1.close()
         fp2.close()
         
@@ -283,6 +288,7 @@ for song_in_query in solo_list:
                         f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                        print("\tDownloading assets: "+name[17:]+"...")
                 else:
                         fp=Path(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\"+hash)
                         fp.touch(exist_ok=True)
@@ -295,6 +301,7 @@ for song_in_query in solo_list:
                                 print("\tFile "+hash+'('+name+')'+" didn't pass md5check, delete and re-downloading ...")
                                 url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                                 dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                                print("\tDownloading assets: "+name[17:]+"...")
         fp1.close()
         fp2.close()
         
@@ -337,6 +344,7 @@ for song_in_query in solo_list:
                         f.close()
                         url="http://asset-starlight-stage.akamaized.net/dl/resources/Sound/"+hash[:2]+"/"+hash
                         dlfilefrmurl(url,version+"\\solo\\"+song_in_query+"_another\\"+hash,dl_headers)
+                        print("\tDownloading assets: "+name[17:]+"...")
         fp1.close()
         fp2.close()
         
