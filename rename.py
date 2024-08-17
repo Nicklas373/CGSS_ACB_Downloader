@@ -48,10 +48,10 @@ print("\tCleanup old log from rename file is exists! ...")
 
 for old_log in old_files:
         if old_log == "\\sound\\s_ren1.bat" or old_log == "\\sound\\s_ren2.bat":
-                if not os.path.exists(cgss_path+"\\"+version+old_log):
-                        os.remove(cgss_path+"\\"+version+old_log)
+                if os.path.exists(cgss_path+"\\"+version+"\\"+old_log):
+                        os.remove(cgss_path+"\\"+version+"\\"+old_log)
         else:
-                if not os.path.exists(cgss_logs+old_log):
+                if os.path.exists(cgss_logs+old_log):
                         os.remove(cgss_logs+old_log)
         
 solo_list = np.loadtxt(cgss_logs+"\\txt\\solo_list.txt", dtype=str, delimiter=",")
@@ -88,6 +88,8 @@ song_main_name_list = np.loadtxt(cgss_logs+"\\txt\\"+"song_main_name_list.txt", 
 for song_main_name in song_main_name_list:
     query=music_data_con.execute("select id, name from music_data where id like '"+song_main_name+"'")
     if not os.path.exists(csv_music_data):
+                if not os.path.exists(cgss_logs+"\\music_data"):
+                       os.makedirs(cgss_logs+"\\music_data")
                 f = open(csv_music_data, 'w', encoding='UTF8', newline='')
                 writer = csv.writer(f)
                 writer.writerow(csv_header)
