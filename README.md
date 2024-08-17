@@ -43,7 +43,6 @@ Dependency:
 2. lz4 (module)
 3. numpy (module)
 4. openpyxl (module)
-5. tabula (module)
 
 - Windows
 

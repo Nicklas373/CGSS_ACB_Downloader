@@ -2,4 +2,3 @@ requests
 lz4==4.0.0
 numpy
 openpyxl
-tabula

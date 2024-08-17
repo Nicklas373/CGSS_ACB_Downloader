@@ -5,10 +5,8 @@ import csv
 import numpy as np
 import pandas as pd
 import os,sys, os.path
-import sqlite3,hashlib
-import tabula
+import sqlite3
 from datetime import date
-from os import path
 from pathlib import Path
 
 cgss_path=os.getcwd()
