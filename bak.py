@@ -8,8 +8,8 @@ from pathlib import Path
 
 # define the name of the directory to be created
 cgss_win_path = os.getcwd()
-path_orig = np.array(["bgm/", "sound/", "solo/", "se/"])
-path_moved = np.array(["bgm_acb", "sound_acb", "solo_acb", "se_acb"])
+path_orig = np.array(["bgm/", "bgm-movie/", "sound/", "solo/", "se/"])
+path_moved = np.array(["bgm_acb", "bgm-movie_acb", "sound_acb", "solo_acb", "se_acb"])
 if os.path.exists("Static_version"):
     f=Path("Static_version")
     f=open(f, 'r')
@@ -23,7 +23,7 @@ else:
 
 # define move all files to specific directory command
 i = 0
-while i < 4:
+while i < len(path_orig):
     files = os.listdir(path_backup+path_orig[i])
     os.mkdir(path_backup+path_moved[i])
     try:
