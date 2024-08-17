@@ -22,7 +22,9 @@ old_files = ["\\sound\\s_ren1.bat","\\sound\\s_ren2.bat","\\txt\\song_1001_vocal
                 "\\txt\\song_call_name_list.txt","\\txt\\song_collab_name_list.txt","\\txt\\song_movie_name_list.txt","\\txt\\song_se_name_list.txt"]
 
 if not os.path.exists(cgss_path+"\\Static_version"):
-        print("\tPlease run cgss.py if you want to get latest manifest version!")
+        print("\tStatic version are not found !")
+        print("\tPlease run cgss.py to get manifests version")
+        sys.exit(1)
 elif os.path.exists(cgss_path+"\\Static_version"):
         f=Path("Static_version")
         f=open(f)
