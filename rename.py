@@ -15,9 +15,9 @@ cgss_path=os.getcwd()
 cgss_logs=cgss_path+"\\logs"
 csv_header= ['manifest_music_name', 'music_data_name', 'manifest_version', 'date']
 csv_music_data=cgss_logs+"\\music_data\\music_data.csv"
-music_data_another=".\\local_data\\music_data_another.db"
-music_data=".\\local_data\\music_data.db"
-chara_data=".\\local_data\\chara_data.db"
+music_data_another=cgss_path+"\\local_data\\music_data_another.db"
+music_data=cgss_path+"\\local_data\\music_data.db"
+chara_data=cgss_path+"\\local_data\\chara_data.db"
 old_files = ["\\sound\\s_ren1.bat","\\sound\\s_ren2.bat","\\txt\\song_1001_vocal_list.txt","\\txt\\song_another_name_list.txt",
                 "\\txt\\song_call_name_list.txt","\\txt\\song_collab_name_list.txt","\\txt\\song_movie_name_list.txt","\\txt\\song_se_name_list.txt"]
 
@@ -26,7 +26,7 @@ if not os.path.exists(cgss_path+"\\Static_version"):
         print("\tPlease run cgss.py to get manifests version")
         sys.exit(1)
 elif os.path.exists(cgss_path+"\\Static_version"):
-        f=Path("Static_version")
+        f=Path(cgss_path+"\\Static_version")
         f=open(f)
         version = f.read()
         f.close()
@@ -34,7 +34,7 @@ elif os.path.exists(cgss_path+"\\Static_version"):
                 print("\tCurrent manifest version = "+version)
                 print("\tPlease run cgss.py if you want to get latest manifest version!")
 
-manifests=".\\manifests\\manifest_"+version+".db"
+manifests=cgss_path+"\\manifests\\manifest_"+version+".db"
 manifests_con=sqlite3.Connection(manifests)
 music_data_con=sqlite3.Connection(music_data)
 music_data_another_con=sqlite3.Connection(music_data_another)
@@ -93,8 +93,8 @@ for song_main_name in song_main_name_list:
                 writer.writerow(csv_header)
                 f.close() 
     for id,name in query:
-                fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-                fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+                fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+                fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
                 replace_phase_1 = str(name).replace(' ','_')
                 replace_phase_2 = str(replace_phase_1).replace('\n','')
                 fp1.write("ren song_"+str(id)+".hca"+ ' '+str(replace_phase_2).replace("\n"," ")+".hca"+"\n")
@@ -118,8 +118,8 @@ song_another_name_list = np.loadtxt(cgss_logs+"\\txt\\"+"song_another_name_list.
 for song_another_name in song_another_name_list:
     query=music_data_another_con.execute("select music_id, name from music_another_data where music_id like '"+song_another_name+"'")
     for music_id,name in query:
-        fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
         fp1.write("ren song_"+music_id+".hca"+ ' '+str(name).replace(' ','_')+"_another.hca"+"\n")
         fp2.write("ren "+str(name).replace(' ','_')+"_another.hca"+' '+"song_"+music_id+".hca"+"\n")
         fp1.close()
@@ -141,8 +141,8 @@ song_call_name_list = np.loadtxt(cgss_logs+"\\txt\\"+"song_call_name_list.txt", 
 for song_call_name in song_call_name_list:
     query=music_data_another_con.execute("select music_id, name from music_another_data where music_id like '"+song_call_name+"'")
     for music_id,name in query:
-        fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
         fp1.write("ren song_"+music_id+".hca"+ ' '+str(name).replace(' ','_')+"_call.hca"+"\n")
         fp2.write("ren "+str(name).replace(' ','_')+"_call.hca"+' '+"song_"+music_id+".hca"+"\n")
         fp1.close()
@@ -164,8 +164,8 @@ song_collab_name_read = open(cgss_logs+"\\txt\\"+"song_collab_name_list.txt", "r
 song_collab_name = song_collab_name_read.read()
 query=music_data_con.execute("select id, name from music_data where id like '"+song_collab_name[:-8]+"'")
 for id,name in query:
-        fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
         fp1.write("ren song_"+str(id)+".hca"+ ' '+str(name).replace(' ','_')+"_collab.hca"+"\n")
         fp2.write("ren "+str(name).replace(' ','_')+"_collab.hca"+' '+"song_"+str(id)+".hca"+"\n")
         fp1.close()
@@ -187,8 +187,8 @@ song_se_name_list = np.loadtxt(cgss_logs+"\\txt\\"+"song_se_name_list.txt", dtyp
 for song_se_name in song_se_name_list:
     query=music_data_con.execute("select id, name from music_data where id like '"+song_se_name[:-3]+"'")
     for id,name in query:
-        fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
         fp1.write("ren song_"+str(id)+".hca"+ ' '+str(name).replace(' ','_')+"_se.hca"+"\n")
         fp2.write("ren "+str(name).replace(' ','_')+"_se.hca"+' '+"song_"+str(id)+".hca"+"\n")
         fp1.close()
@@ -210,8 +210,8 @@ song_movie_name_read = open(cgss_logs+"\\txt\\"+"song_movie_name_list.txt", "r")
 song_movie_name_list = song_movie_name_read.read()
 query=music_data_con.execute("select id, name from music_data where id like '"+song_movie_name_list[:-7]+"'")
 for id,name in query:
-        fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
         fp1.write("ren song_"+str(id)+".hca"+ ' '+str(name).replace(' ','_')+"_movie.hca"+"\n")
         fp2.write("ren "+str(name).replace(' ','_')+"_movie.hca"+' '+"song_"+str(id)+".hca"+"\n")
         fp1.close()
@@ -233,8 +233,8 @@ song_1001_vocal_list = np.loadtxt(cgss_logs+"\\txt\\"+"song_1001_vocal_list.txt"
 for song_1001_vocal in song_1001_vocal_list:
     query=vocal_data_con.execute("select chara_id, name from chara_data where chara_id like '"+song_1001_vocal+"'")
     for chara_id,name in query:
-        fp1=open(version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\sound\\s_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\sound\\s_ren2.bat", 'a', encoding='utf8')
         fp1.write("ren song_1001_"+str(chara_id)+".hca"+ ' お願い_!_シンデレラ~'+str(name).replace(' ','_')+".hca"+"\n")
         fp2.write("ren お願い_!_シンデレラ~"+str(name).replace(' ','_')+".hca"+' '+"song_1001_"+str(chara_id)+".hca"+"\n")
         fp1.close()
@@ -257,8 +257,8 @@ for solo_in_query in solo_list:
 solo_list = np.loadtxt(cgss_logs+"\\txt\\solo_list.txt", dtype=str, delimiter=",")
 for solo_in_query in solo_list:
         sub_solo_list = np.loadtxt(cgss_logs+"\\txt\\"+solo_in_query+"_vocal.txt", dtype=str, delimiter=",")
-        fp1=open(version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat", 'a', encoding='utf8')
         for sub_solo_list_in_query in sub_solo_list:
                 solo_id_trim = solo_in_query[5:][:-5]
                 query1 = music_data_con.execute("select id, name as music_name from music_data where id like '"+solo_id_trim+"'")
@@ -294,8 +294,8 @@ for solo_in_query in solo_list:
 
 solo_list = np.loadtxt(cgss_logs+"\\txt\\solo_list.txt", dtype=str, delimiter=",")
 for solo_in_query in solo_list:
-        fp1=open(version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat", 'a', encoding='utf8')
-        fp2=open(version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat", 'a', encoding='utf8')
+        fp1=open(cgss_path+"\\"+version+"\\solo\\"+solo_in_query+"\\sva_ren1.bat", 'a', encoding='utf8')
+        fp2=open(cgss_path+"\\"+version+"\\solo\\"+solo_in_query+"\\sva_ren2.bat", 'a', encoding='utf8')
         solo_id_trim = solo_in_query[5:][:-5]
         query1 = music_data_con.execute("select id, name as music_name from music_data where id like '"+solo_id_trim+"'")
         for id, music_name in query1:

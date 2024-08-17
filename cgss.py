@@ -54,36 +54,47 @@ except Exception as e:
 else:
         print("")
 
-if os.path.exists("Static_version"):
-        f=Path("Static_version")
+if os.path.exists(cgss_path+"\\Static_version"):
+        f=Path(cgss_path+"\\Static_version")
         f=open(f)
         version_orig = f.read()
         f.close()
 else:
-        f = open("Static_version", "w")
+        f=Path(cgss_path+"\\Static_version")
+        f=open(f, 'w')
         f.write("000000")
         f.close()
         version_orig = "000000"
 print("\tCurrent manifest version = "+version_orig)
 print("\tNew manifest version = "+version)
-if path.exists(version_orig):
+if not os.path.exists(cgss_path+"\\"+version_orig):
         if version_orig < version:
                 print("\tCurrent version with the latest manifest is outdated")
-                os.mkdir(".\\"+version)
-                old_manifest=os.listdir(".\\"+version_orig)
-                try:
-                        print("\tMoving files from current manifest to latest manifest ...")
-                        for x in old_manifest:
-                                shutil.move(".\\"+version_orig+"\\"+x,".\\"+version+"\\"+x)
-                except OSError:
-                        print("\tCopy files from %s to static directory failed" % version)
-                print("\tRemoving old manifest files ...")
-                shutil.rmtree(".\\"+version_orig)
+                if not os.path.exists(cgss_path+"\\"+version):
+                        os.mkdir(cgss_path+"\\"+version)
+                if os.path.exists(cgss_path+"\\"+version_orig):
+                        old_manifest=os.listdir(cgss_path+"\\"+version_orig)
+                        try:
+                                print("\tMoving files from current manifest to latest manifest ...")
+                                for x in old_manifest:
+                                        shutil.move(cgss_path+"\\"+version_orig+"\\"+x,cgss_path+"\\"+version+"\\"+x)
+                        except OSError:
+                                print("\tCopy files from %s to static directory failed" % version)
+                        print("\tRemoving old manifest files ...")
+                        shutil.rmtree(cgss_path+"\\"+version_orig)
+                else:
+                        print("\tPrevious manifest files: "+version_orig+" are not found !")
+                        print("\tAbort moving to new manifests !")
                 f=Path("Static_version")
                 f=open(f, 'w')
                 f.write(version)
                 f.close()
                 print("\tRe-writing old static manifest with the latest one")
+                f=Path(".gitignore")
+                f=open(f, 'a')
+                f.write("\n"+version+"/")
+                f.close()
+                print("\tRe-writing new manifest into .gitignore")
         elif version_orig == version:
                 print("\tCurrent version with the latest manifest is same")
                 print("\tRe-checking manifest ...")
@@ -91,8 +102,8 @@ if path.exists(version_orig):
                 print("\tCurrent version with the latest manifest is unknown")
                 sys.exit(1)
 else:
-        if not os.path.exists(version):
-                os.mkdir(version)
+        if not os.path.exists(cgss_path+"\\"+version):
+                os.mkdir(cgss_path+"\\"+version)
         f=Path("Static_version")
         f=open(f, 'w')
         f.write(version)
@@ -105,10 +116,10 @@ if not os.path.exists(cgss_path+"\\"+version+"\\solo"):
                         
 dl_headers={'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 7.0; Nexus 42 Build/XYZZ1Y)','X-Unity-Version': '2017.4.2f2','Accept-Encoding': 'gzip','Connection' : 'Keep-Alive','Accept' : '*/*'}
 
-if not os.path.exists(".\\manifests"):
-	os.mkdir(".\\manifests")
-dbname=".\\manifests\\manifest_"+version+".db"
-lz4name=".\\manifests\\manifest_"+version+".db.lz4"
+if not os.path.exists(cgss_path+"\\manifests"):
+	os.mkdir(cgss_path+"\\")
+dbname=cgss_path+"\\manifests\\manifest_"+version+".db"
+lz4name=cgss_path+"\\manifests\\manifest_"+version+".db.lz4"
 if not os.path.exists(dbname):
 	if not os.path.exists(lz4name):
 		print("\tDownloading lz4-compressed database ...")
@@ -148,8 +159,8 @@ while i < 3:
         cgss_folder=cgss_path+"\\"+version+"\\"+song_in_folder[i]
         if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"):
             os.makedirs(cgss_folder)
-        fp1=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
-        fp2=open(version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
+        fp1=open(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren1.bat",'w')
+        fp2=open(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+song_in_alias[i]+"_ren2.bat",'w')
         today=date.today()
         if not os.path.exists(csv_path):
                 if not os.path.exists(cgss_logs+"\\csv\\"):
@@ -161,7 +172,7 @@ while i < 3:
         for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[2:]+'\n')
                 fp2.write("ren "+name[2:]+' '+hash+'\n')
-                if not os.path.exists(version+"\\"+song_in_folder[i]+"\\"+hash):
+                if not os.path.exists(cgss_path+"\\"+version+"\\"+song_in_folder[i]+"\\"+hash):
                         csv_rows=[name[2:], hash, humansize(size), today, version]
                         f = open(csv_path, 'a', encoding='UTF8', newline='')
                         writer = csv.writer(f)
@@ -207,7 +218,7 @@ solo_list = np.loadtxt(cgss_logs+"\\txt\\"+"solo_list.txt", dtype=str, delimiter
 for song_in_query in solo_list:
         print("\tDownloading assets for: "+song_in_query+"...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/%.awb' and name not like 'l/song_%_part/inst_song_%_another.awb'")
-        part=version+"\\solo\\"+song_in_query
+        part=cgss_path+"\\"+version+"\\solo\\"+song_in_query
         if not os.path.exists(part):
                 os.makedirs(part)
         csv_solo_path=cgss_logs+"\\csv\\"+song_in_query+".csv"
@@ -220,11 +231,11 @@ for song_in_query in solo_list:
                 writer.writerow(csv_header)
                 f.close() 
         for name,hash,size in query:
-                fp1=open(version+"\\solo\\"+song_in_query+"\\p_ren1.bat",'a')
-                fp2=open(version+"\\solo\\"+song_in_query+"\\p_ren2.bat",'a')
+                fp1=open(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"\\p_ren1.bat",'a')
+                fp2=open(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"\\p_ren2.bat",'a')
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
-                if not os.path.exists(version+"\\solo\\"+song_in_query+"\\"+hash):
+                if not os.path.exists(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"\\"+hash):
                         csv_solo_rows=[name[2:], hash, humansize(size), today, version]
                         f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
                         writer = csv.writer(f)
@@ -263,7 +274,7 @@ for song_in_query in solo_list:
         new_song_code=song_in_query[5:][:-5]
         print("\tDownloading assets for: "+song_in_query+"_another...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/inst_song_"+new_song_code+"_%.awb'")
-        part=version+"\\solo\\"+song_in_query+"_another"
+        part=cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another"
         if not os.path.exists(part):
                os.makedirs(part)
         csv_solo_path=cgss_logs+"\\csv\\"+song_in_query+"_another.csv"
@@ -276,8 +287,8 @@ for song_in_query in solo_list:
                 writer.writerow(csv_header)
                 f.close() 
         for name,hash,size in query:
-                fp1=open(version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
-                fp2=open(version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
+                fp1=open(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
+                fp2=open(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
                 if not os.path.exists(version+"\\solo\\"+song_in_query+"_another\\"+hash):
@@ -319,14 +330,14 @@ for song_in_query in solo_list:
         new_song_code=song_in_query[5:][:-5]
         print("\tDownloading assets for: "+song_in_query+"_another...")
         query=db.execute("select name,hash,size from manifests where name like 'l/"+song_in_query+"/inst_song_"+new_song_code+"_%.awb'")
-        part=version+"\\solo\\"+song_in_query+"_another"
+        part=cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another"
         if path.exists(part):
                 print("")
         else:
                 os.makedirs(part)
         csv_solo_path=cgss_logs+"\\csv\\"+song_in_query+"_another.csv"
-        fp1=open(version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
-        fp2=open(version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
+        fp1=open(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\p_ren1.bat",'a')
+        fp2=open(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\p_ren2.bat",'a')
         today=date.today()
         if not os.path.exists(csv_solo_path):
                 f = open(csv_solo_path, 'w', encoding='UTF8', newline='')
@@ -336,7 +347,7 @@ for song_in_query in solo_list:
         for name,hash,size in query:
                 fp1.write("ren "+hash+' '+name[17:]+'\n')
                 fp2.write("ren "+name[17:]+' '+hash+'\n')
-                if not os.path.exists(version+"\\solo\\"+song_in_query+"_another\\"+hash):
+                if not os.path.exists(cgss_path+"\\"+version+"\\solo\\"+song_in_query+"_another\\"+hash):
                         csv_solo_rows=[name[2:], hash, humansize(size), today, version]
                         f = open(csv_solo_path, 'a', encoding='UTF8', newline='')
                         writer = csv.writer(f)
