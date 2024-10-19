@@ -4,7 +4,7 @@ This is a python based script that can download ACB assets files for BGM, Sound 
 
 # Project Status
 
-![Build](https://app.travis-ci.com/Nicklas373/CGSS_ACB_Downloader.svg?branch=master) ![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10122900-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20240817-blue)
+![Manifest](https://img.shields.io/badge/dynamic/json.svg?color=blue&label=Manifest&query=truth_version&url=https%3A%2F%2Fstarlight.kirara.ca%2Fapi%2Fv1%2Finfo) ![Static Manifest](https://img.shields.io/badge/Static%20Manifest-10124500-blue) ![Updates](https://img.shields.io/badge/Latest%20Updates-20240817-blue)
 
 Main functions :
 
